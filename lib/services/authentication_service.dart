@@ -1,12 +1,11 @@
 import 'dart:convert';
 
+import 'package:absensi/app/api.dart';
 import 'package:http/http.dart' show Client;
 import 'package:absensi/models/user_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
-  final _baseUrl = "http://192.168.43.239:5000";
-  // final _baseUrl = "http://sensus-malimpung.000webhostapp.com/api";
   Client client = Client();
 
   Future<UserModel?> getCurrentUser() async {
@@ -37,7 +36,7 @@ class AuthenticationService {
     try {
       // await Future.delayed(Duration(milliseconds: 1500));
 
-      final url = '$_baseUrl/login';
+      final url = '$BASE_URL/login';
       final response = await client.post(Uri.parse(url),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',

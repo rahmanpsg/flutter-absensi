@@ -1,5 +1,7 @@
 import 'package:absensi/bloc/authentication_bloc.dart';
+import 'package:absensi/bloc/geolocation_bloc.dart';
 import 'package:absensi/services/authentication_service.dart';
+import 'package:absensi/services/geolocator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,14 +24,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthenticationService(),
-      child: BlocProvider(
-        create: (context) {
-          final authService =
-              RepositoryProvider.of<AuthenticationService>(context);
-          return AuthenticationBloc(authService)..add(AppLoaded());
-        },
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => AuthenticationService()),
+        RepositoryProvider(create: (context) => GeolocatorService()),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) {
+            final authService =
+                RepositoryProvider.of<AuthenticationService>(context);
+            return AuthenticationBloc(authService);
+          }),
+          BlocProvider(create: (context) {
+            final geoService =
+                RepositoryProvider.of<GeolocatorService>(context);
+            return GeolocationBloc(geoService)..add(GeolocationLoaded());
+          })
+        ],
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             return MaterialApp(
