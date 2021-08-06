@@ -181,7 +181,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          _showError(state.error);
+          _showError(state.message);
         }
 
         if (state is LoginSuccess) {

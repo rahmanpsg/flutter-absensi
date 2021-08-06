@@ -22,16 +22,16 @@ class _$HistoriModelTearOff {
 
   $_HistoriModel call(
       {required String tanggal,
-      required String jamDatang,
-      required String jamPulang,
-      required String infoDatang,
-      required String infoPulang}) {
+      required String waktuDatang,
+      required String waktuPulang,
+      required String infoAbsenDatang,
+      required String infoAbsenPulang}) {
     return $_HistoriModel(
       tanggal: tanggal,
-      jamDatang: jamDatang,
-      jamPulang: jamPulang,
-      infoDatang: infoDatang,
-      infoPulang: infoPulang,
+      waktuDatang: waktuDatang,
+      waktuPulang: waktuPulang,
+      infoAbsenDatang: infoAbsenDatang,
+      infoAbsenPulang: infoAbsenPulang,
     );
   }
 
@@ -46,10 +46,10 @@ const $HistoriModel = _$HistoriModelTearOff();
 /// @nodoc
 mixin _$HistoriModel {
   String get tanggal => throw _privateConstructorUsedError;
-  String get jamDatang => throw _privateConstructorUsedError;
-  String get jamPulang => throw _privateConstructorUsedError;
-  String get infoDatang => throw _privateConstructorUsedError;
-  String get infoPulang => throw _privateConstructorUsedError;
+  String get waktuDatang => throw _privateConstructorUsedError;
+  String get waktuPulang => throw _privateConstructorUsedError;
+  String get infoAbsenDatang => throw _privateConstructorUsedError;
+  String get infoAbsenPulang => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -64,10 +64,10 @@ abstract class $HistoriModelCopyWith<$Res> {
       _$HistoriModelCopyWithImpl<$Res>;
   $Res call(
       {String tanggal,
-      String jamDatang,
-      String jamPulang,
-      String infoDatang,
-      String infoPulang});
+      String waktuDatang,
+      String waktuPulang,
+      String infoAbsenDatang,
+      String infoAbsenPulang});
 }
 
 /// @nodoc
@@ -81,31 +81,31 @@ class _$HistoriModelCopyWithImpl<$Res> implements $HistoriModelCopyWith<$Res> {
   @override
   $Res call({
     Object? tanggal = freezed,
-    Object? jamDatang = freezed,
-    Object? jamPulang = freezed,
-    Object? infoDatang = freezed,
-    Object? infoPulang = freezed,
+    Object? waktuDatang = freezed,
+    Object? waktuPulang = freezed,
+    Object? infoAbsenDatang = freezed,
+    Object? infoAbsenPulang = freezed,
   }) {
     return _then(_value.copyWith(
       tanggal: tanggal == freezed
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
               as String,
-      jamDatang: jamDatang == freezed
-          ? _value.jamDatang
-          : jamDatang // ignore: cast_nullable_to_non_nullable
+      waktuDatang: waktuDatang == freezed
+          ? _value.waktuDatang
+          : waktuDatang // ignore: cast_nullable_to_non_nullable
               as String,
-      jamPulang: jamPulang == freezed
-          ? _value.jamPulang
-          : jamPulang // ignore: cast_nullable_to_non_nullable
+      waktuPulang: waktuPulang == freezed
+          ? _value.waktuPulang
+          : waktuPulang // ignore: cast_nullable_to_non_nullable
               as String,
-      infoDatang: infoDatang == freezed
-          ? _value.infoDatang
-          : infoDatang // ignore: cast_nullable_to_non_nullable
+      infoAbsenDatang: infoAbsenDatang == freezed
+          ? _value.infoAbsenDatang
+          : infoAbsenDatang // ignore: cast_nullable_to_non_nullable
               as String,
-      infoPulang: infoPulang == freezed
-          ? _value.infoPulang
-          : infoPulang // ignore: cast_nullable_to_non_nullable
+      infoAbsenPulang: infoAbsenPulang == freezed
+          ? _value.infoAbsenPulang
+          : infoAbsenPulang // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -120,10 +120,10 @@ abstract class $$_HistoriModelCopyWith<$Res>
   @override
   $Res call(
       {String tanggal,
-      String jamDatang,
-      String jamPulang,
-      String infoDatang,
-      String infoPulang});
+      String waktuDatang,
+      String waktuPulang,
+      String infoAbsenDatang,
+      String infoAbsenPulang});
 }
 
 /// @nodoc
@@ -140,31 +140,31 @@ class _$$_HistoriModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? tanggal = freezed,
-    Object? jamDatang = freezed,
-    Object? jamPulang = freezed,
-    Object? infoDatang = freezed,
-    Object? infoPulang = freezed,
+    Object? waktuDatang = freezed,
+    Object? waktuPulang = freezed,
+    Object? infoAbsenDatang = freezed,
+    Object? infoAbsenPulang = freezed,
   }) {
     return _then($_HistoriModel(
       tanggal: tanggal == freezed
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
               as String,
-      jamDatang: jamDatang == freezed
-          ? _value.jamDatang
-          : jamDatang // ignore: cast_nullable_to_non_nullable
+      waktuDatang: waktuDatang == freezed
+          ? _value.waktuDatang
+          : waktuDatang // ignore: cast_nullable_to_non_nullable
               as String,
-      jamPulang: jamPulang == freezed
-          ? _value.jamPulang
-          : jamPulang // ignore: cast_nullable_to_non_nullable
+      waktuPulang: waktuPulang == freezed
+          ? _value.waktuPulang
+          : waktuPulang // ignore: cast_nullable_to_non_nullable
               as String,
-      infoDatang: infoDatang == freezed
-          ? _value.infoDatang
-          : infoDatang // ignore: cast_nullable_to_non_nullable
+      infoAbsenDatang: infoAbsenDatang == freezed
+          ? _value.infoAbsenDatang
+          : infoAbsenDatang // ignore: cast_nullable_to_non_nullable
               as String,
-      infoPulang: infoPulang == freezed
-          ? _value.infoPulang
-          : infoPulang // ignore: cast_nullable_to_non_nullable
+      infoAbsenPulang: infoAbsenPulang == freezed
+          ? _value.infoAbsenPulang
+          : infoAbsenPulang // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -175,10 +175,10 @@ class _$$_HistoriModelCopyWithImpl<$Res>
 class _$$_HistoriModel implements $_HistoriModel {
   const _$$_HistoriModel(
       {required this.tanggal,
-      required this.jamDatang,
-      required this.jamPulang,
-      required this.infoDatang,
-      required this.infoPulang});
+      required this.waktuDatang,
+      required this.waktuPulang,
+      required this.infoAbsenDatang,
+      required this.infoAbsenPulang});
 
   factory _$$_HistoriModel.fromJson(Map<String, dynamic> json) =>
       _$_$$_HistoriModelFromJson(json);
@@ -186,17 +186,17 @@ class _$$_HistoriModel implements $_HistoriModel {
   @override
   final String tanggal;
   @override
-  final String jamDatang;
+  final String waktuDatang;
   @override
-  final String jamPulang;
+  final String waktuPulang;
   @override
-  final String infoDatang;
+  final String infoAbsenDatang;
   @override
-  final String infoPulang;
+  final String infoAbsenPulang;
 
   @override
   String toString() {
-    return 'HistoriModel(tanggal: $tanggal, jamDatang: $jamDatang, jamPulang: $jamPulang, infoDatang: $infoDatang, infoPulang: $infoPulang)';
+    return 'HistoriModel(tanggal: $tanggal, waktuDatang: $waktuDatang, waktuPulang: $waktuPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang)';
   }
 
   @override
@@ -206,28 +206,28 @@ class _$$_HistoriModel implements $_HistoriModel {
             (identical(other.tanggal, tanggal) ||
                 const DeepCollectionEquality()
                     .equals(other.tanggal, tanggal)) &&
-            (identical(other.jamDatang, jamDatang) ||
+            (identical(other.waktuDatang, waktuDatang) ||
                 const DeepCollectionEquality()
-                    .equals(other.jamDatang, jamDatang)) &&
-            (identical(other.jamPulang, jamPulang) ||
+                    .equals(other.waktuDatang, waktuDatang)) &&
+            (identical(other.waktuPulang, waktuPulang) ||
                 const DeepCollectionEquality()
-                    .equals(other.jamPulang, jamPulang)) &&
-            (identical(other.infoDatang, infoDatang) ||
+                    .equals(other.waktuPulang, waktuPulang)) &&
+            (identical(other.infoAbsenDatang, infoAbsenDatang) ||
                 const DeepCollectionEquality()
-                    .equals(other.infoDatang, infoDatang)) &&
-            (identical(other.infoPulang, infoPulang) ||
+                    .equals(other.infoAbsenDatang, infoAbsenDatang)) &&
+            (identical(other.infoAbsenPulang, infoAbsenPulang) ||
                 const DeepCollectionEquality()
-                    .equals(other.infoPulang, infoPulang)));
+                    .equals(other.infoAbsenPulang, infoAbsenPulang)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(tanggal) ^
-      const DeepCollectionEquality().hash(jamDatang) ^
-      const DeepCollectionEquality().hash(jamPulang) ^
-      const DeepCollectionEquality().hash(infoDatang) ^
-      const DeepCollectionEquality().hash(infoPulang);
+      const DeepCollectionEquality().hash(waktuDatang) ^
+      const DeepCollectionEquality().hash(waktuPulang) ^
+      const DeepCollectionEquality().hash(infoAbsenDatang) ^
+      const DeepCollectionEquality().hash(infoAbsenPulang);
 
   @JsonKey(ignore: true)
   @override
@@ -243,10 +243,10 @@ class _$$_HistoriModel implements $_HistoriModel {
 abstract class $_HistoriModel implements HistoriModel {
   const factory $_HistoriModel(
       {required String tanggal,
-      required String jamDatang,
-      required String jamPulang,
-      required String infoDatang,
-      required String infoPulang}) = _$$_HistoriModel;
+      required String waktuDatang,
+      required String waktuPulang,
+      required String infoAbsenDatang,
+      required String infoAbsenPulang}) = _$$_HistoriModel;
 
   factory $_HistoriModel.fromJson(Map<String, dynamic> json) =
       _$$_HistoriModel.fromJson;
@@ -254,13 +254,13 @@ abstract class $_HistoriModel implements HistoriModel {
   @override
   String get tanggal => throw _privateConstructorUsedError;
   @override
-  String get jamDatang => throw _privateConstructorUsedError;
+  String get waktuDatang => throw _privateConstructorUsedError;
   @override
-  String get jamPulang => throw _privateConstructorUsedError;
+  String get waktuPulang => throw _privateConstructorUsedError;
   @override
-  String get infoDatang => throw _privateConstructorUsedError;
+  String get infoAbsenDatang => throw _privateConstructorUsedError;
   @override
-  String get infoPulang => throw _privateConstructorUsedError;
+  String get infoAbsenPulang => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   $$_HistoriModelCopyWith<$_HistoriModel> get copyWith =>

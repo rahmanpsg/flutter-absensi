@@ -1,7 +1,13 @@
 part of 'geolocation_bloc.dart';
 
 abstract class GeolocationState extends Equatable {
-  const GeolocationState(this.geolocation, this.circle);
+  const GeolocationState({
+    this.geolocation =
+        const GeolocationModel(latitude: 0, longitude: 0, radius: 0),
+    this.circle = const Circle(
+      circleId: CircleId(''),
+    ),
+  });
 
   final GeolocationModel geolocation;
   final Circle circle;
@@ -10,25 +16,9 @@ abstract class GeolocationState extends Equatable {
   List<Object> get props => [geolocation, circle];
 }
 
-class GeolocationInital extends GeolocationState {
-  GeolocationInital()
-      : super(
-          const GeolocationModel(latitude: 0, longitude: 0, radius: 0),
-          const Circle(
-            circleId: CircleId(''),
-          ),
-        );
-}
+class GeolocationInital extends GeolocationState {}
 
-class GeolocationLoading extends GeolocationState {
-  GeolocationLoading()
-      : super(
-          const GeolocationModel(latitude: 0, longitude: 0, radius: 0),
-          const Circle(
-            circleId: CircleId(''),
-          ),
-        );
-}
+class GeolocationLoading extends GeolocationState {}
 
 class GeolocationIsLoaded extends GeolocationState {
   const GeolocationIsLoaded({
@@ -37,8 +27,8 @@ class GeolocationIsLoaded extends GeolocationState {
     required this.marker,
     required this.inRadius,
   }) : super(
-          geolocation,
-          circle,
+          geolocation: geolocation,
+          circle: circle,
         );
 
   final GeolocationModel geolocation;
@@ -51,13 +41,7 @@ class GeolocationIsLoaded extends GeolocationState {
 }
 
 class GeolocationFailure extends GeolocationState {
-  const GeolocationFailure({required this.message})
-      : super(
-          const GeolocationModel(latitude: 0, longitude: 0, radius: 0),
-          const Circle(
-            circleId: CircleId(''),
-          ),
-        );
+  const GeolocationFailure({required this.message});
 
   final String message;
 

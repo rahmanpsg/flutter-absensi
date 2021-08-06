@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:absensi/bloc/absen_bloc.dart';
 import 'package:absensi/bloc/authentication_bloc.dart';
+import 'package:absensi/models/responseApi_models.dart';
 import 'package:absensi/models/user_models.dart';
 import 'package:absensi/services/authentication_service.dart';
 import 'package:bloc/bloc.dart';
@@ -10,37 +12,40 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final AuthenticationBloc _authenticationBloc;
-  final AuthenticationService _authenticationService;
-
-  LoginBloc(this._authenticationBloc, this._authenticationService)
+  LoginBloc(
+      this._authenticationBloc, this._absenBloc, this._authenticationService)
       : super(LoginInitial());
+
+  final AuthenticationBloc _authenticationBloc;
+  final AbsenBloc _absenBloc;
+  final AuthenticationService _authenticationService;
 
   @override
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
     if (event is LoginButtonClick) {
-      yield* _mapLoginWithEmailToState(event);
+      yield* _mapLoginToState(event);
     }
   }
 
-  Stream<LoginState> _mapLoginWithEmailToState(LoginButtonClick event) async* {
+  Stream<LoginState> _mapLoginToState(LoginButtonClick event) async* {
     yield LoginLoading();
 
     try {
-      final user =
+      final res =
           await _authenticationService.signIn(event.username, event.password);
 
-      if (user is UserModel) {
-        _authenticationBloc.add(UserLoggedIn(user: user));
+      if (res is UserModel) {
+        _authenticationBloc.add(UserLoggedIn(user: res));
+        _absenBloc.add(AbsenLoaded());
         yield LoginSuccess();
         yield LoginInitial();
       } else {
-        yield LoginFailure(error: user);
+        yield LoginFailure(message: (res as ResponseApiModel).message);
       }
     } catch (err) {
-      yield LoginFailure(error: 'Terjadi masalah yang tidak diketahui');
+      yield LoginFailure(message: 'Terjadi masalah yang tidak diketahui');
     }
   }
 }

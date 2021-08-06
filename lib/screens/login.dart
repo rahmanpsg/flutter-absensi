@@ -1,18 +1,12 @@
-import 'package:absensi/bloc/authentication_bloc.dart';
-import 'package:absensi/bloc/login_bloc.dart';
-import 'package:absensi/services/authentication_service.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:absensi/widgets/loginForm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final authService = RepositoryProvider.of<AuthenticationService>(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
     int popped = 0;
 
     return WillPopScope(
@@ -60,28 +54,25 @@ class LoginScreen extends StatelessWidget {
                   horizontal: 40.0,
                   vertical: 200.0,
                 ),
-                child: BlocProvider(
-                  create: (context) => LoginBloc(authBloc, authService),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage("assets/images/logo.png"),
-                        width: 250.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage("assets/images/logo.png"),
+                      width: 250.0,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Absensi Karyawan \nPLTU Barru",
+                      textAlign: TextAlign.center,
+                      style: primaryStyle.copyWith(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Absensi Karyawan \nPLTU Barru",
-                        textAlign: TextAlign.center,
-                        style: primaryStyle.copyWith(
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 30.0),
-                      LoginForm()
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 30.0),
+                    LoginForm()
+                  ],
                 ),
               ),
             )

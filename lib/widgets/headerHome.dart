@@ -1,12 +1,14 @@
+import 'dart:convert';
+
+import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class HeaderHome extends StatelessWidget {
-  const HeaderHome({Key? key, required this.imageUrl, required this.nama})
-      : super(key: key);
+  const HeaderHome({Key? key, required this.state}) : super(key: key);
 
-  final String imageUrl;
-  final String nama;
+  final state;
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +31,42 @@ class HeaderHome extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(
-                    imageUrl,
-                  ),
-                ),
-                SizedBox(width: 20),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: state is AuthenticationOnAuthenticated
+                ? Row(
                     children: <Widget>[
-                      Text(
-                        nama,
-                        style: kHeaderStyle,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        // child: Image.network(
+                        //   'https://img.a.transfermarkt.technology/portrait/big/8198-1626161872.jpg?lm=1',
+                        // ),
+                        child: Image.memory(base64Decode(state.user.image)),
                       ),
-                      Text(
-                        "214280187",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      SizedBox(height: 10),
-                      Divider(color: Colors.black38)
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              state.user.nama ?? '',
+                              style: kHeaderStyle,
+                            ),
+                            Text(
+                              state.user.nik ?? '',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height: 10),
+                            Divider(color: Colors.black38)
+                          ],
+                        ),
+                      )
                     ],
+                  )
+                : Lottie.asset(
+                    'assets/animations/loading.json',
+                    repeat: false,
+                    height: 200,
                   ),
-                )
-              ],
-            ),
           ),
         ),
       ),

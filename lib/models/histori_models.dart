@@ -7,10 +7,10 @@ part 'histori_models.g.dart';
 class HistoriModel with _$HistoriModel {
   const factory HistoriModel({
     required String tanggal,
-    required String jamDatang,
-    required String jamPulang,
-    required String infoDatang,
-    required String infoPulang,
+    required String waktuDatang,
+    required String waktuPulang,
+    required String infoAbsenDatang,
+    required String infoAbsenPulang,
   }) = $_HistoriModel;
 
   factory HistoriModel.fromJson(Map<String, dynamic> json) =>

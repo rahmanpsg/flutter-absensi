@@ -13,3 +13,5 @@ class ChangePosition extends GeolocationEvent {
   final LatLng position;
   ChangePosition(this.position);
 }
+
+class AuthenticationBiometric extends GeolocationEvent {}

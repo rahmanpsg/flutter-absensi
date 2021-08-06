@@ -1,5 +1,6 @@
 import 'package:absensi/styles/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class InfoAbsen extends StatelessWidget {
   const InfoAbsen({
@@ -8,12 +9,14 @@ class InfoAbsen extends StatelessWidget {
     required this.text,
     required this.jam,
     required this.info,
+    required this.libur,
   }) : super(key: key);
 
   final IconData icon;
   final String text;
   final String jam;
   final String info;
+  final bool libur;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +61,7 @@ class InfoAbsen extends StatelessWidget {
                 width: 70,
                 child: Center(
                   child: Text(
-                    jam,
+                    libur ? 'Libur' : jam,
                     style: kHeaderStyle.copyWith(
                       color: Colors.white,
                     ),

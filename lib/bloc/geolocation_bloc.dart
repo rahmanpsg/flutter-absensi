@@ -7,7 +7,6 @@ import 'package:absensi/services/geolocator_service.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 part 'geolocation_event.dart';
@@ -72,10 +71,11 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
             state.geolocation.radius;
 
     return GeolocationIsLoaded(
-        geolocation: state.geolocation,
-        circle: state.circle,
-        marker: createMarker(event.position),
-        inRadius: inRadius);
+      geolocation: state.geolocation,
+      circle: state.circle,
+      marker: createMarker(event.position),
+      inRadius: inRadius,
+    );
   }
 
   Circle createCircle(LatLng point, double radius) {

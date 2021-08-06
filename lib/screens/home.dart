@@ -1,10 +1,19 @@
+import 'dart:developer';
+
+import 'package:absensi/bloc/absen_bloc.dart';
 import 'package:absensi/bloc/authentication_bloc.dart';
+import 'package:absensi/bloc/geolocation_bloc.dart';
+import 'package:absensi/models/absen_models.dart';
+import 'package:absensi/services/geolocator_service.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:absensi/widgets/headerHome.dart';
 import 'package:absensi/widgets/infoAbsen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -38,11 +47,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final absenBloc = BlocProvider.of<AbsenBloc>(context);
+
+    RefreshController _refreshController =
+        RefreshController(initialRefresh: false);
 
     int popped = 0;
-
-    DateTime now = DateTime.now();
-    String tanggal = DateFormat('dd MMMM yyyy').format(now);
 
     return WillPopScope(
       onWillPop: () async {
@@ -75,91 +85,175 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('This is a snackbar')));
+            PopupMenuButton(
+              icon: Icon(Icons.more_vert),
+              itemBuilder: (context) => [
+                PopupMenuItem<int>(
+                  value: 0,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: primaryColor,
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Text("Logout")
+                    ],
+                  ),
+                ),
+              ],
+              onSelected: (item) {
+                authBloc.add(UserLoggedOut());
+                Navigator.of(context).pushReplacementNamed('/login');
               },
-            )
+            ),
           ],
         ),
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              HeaderHome(
-                imageUrl:
-                    'https://img.a.transfermarkt.technology/portrait/big/8198-1626161872.jpg?lm=1',
-                nama: 'Abd Rahman',
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        _buttonAbsen(
-                            icon: Icons.login,
-                            text: 'Absen Datang',
-                            callback: () {
-                              Navigator.of(context).pushNamed('/absensi');
-                            }),
-                        SizedBox(width: 20),
-                        _buttonAbsen(
-                            icon: Icons.logout,
-                            text: 'Absen Pulang',
-                            callback: () {}),
-                        SizedBox(width: 20),
-                        _buttonAbsen(
-                            icon: Icons.auto_stories,
-                            text: 'Histori Absen',
-                            callback: () {
-                              Navigator.of(context).pushNamed('/histori');
-                            }),
-                      ],
-                    ),
-                    SizedBox(height: 60),
-                    Text(
-                      'Jadwal Absen',
-                      style: kHeaderStyle.copyWith(fontSize: 18),
-                    ),
-                    Text(tanggal),
-                    SizedBox(height: 20),
-                    InfoAbsen(
-                      icon: Icons.login,
-                      text: 'Jam Datang',
-                      jam: '08:00',
-                      info: 'Anda Belum Melakukan Absen Datang',
-                    ),
-                    SizedBox(height: 20),
-                    InfoAbsen(
-                      icon: Icons.logout,
-                      text: 'Jam Pulang',
-                      jam: '15:00',
-                      info: '',
-                    ),
-                  ],
+          child: SmartRefresher(
+            controller: _refreshController,
+            onRefresh: () async {
+              absenBloc.add(AbsenLoaded());
+
+              await Future.delayed(Duration(milliseconds: 1000));
+              _refreshController.refreshCompleted();
+            },
+            child: Column(
+              children: <Widget>[
+                BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                  builder: (context, state) {
+                    return HeaderHome(
+                      state: state,
+                    );
+                  },
                 ),
-              ),
-              FlatButton(
-                textColor: Theme.of(context).primaryColor,
-                child: Text('Logout'),
-                onPressed: () {
-                  authBloc.add(UserLoggedOut());
-                  Navigator.of(context).pushReplacementNamed('/login');
-                },
-              )
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          _buttonAbsen(
+                              icon: Icons.login,
+                              text: 'Absen Datang',
+                              callback: () async {
+                                final geoDevice = await GeolocatorService()
+                                    .getDeviceLocation();
+                                context.read<GeolocationBloc>().add(
+                                    ChangePosition(LatLng(geoDevice.latitude,
+                                        geoDevice.longitude)));
+                                Navigator.of(context)
+                                    .pushNamed('/absensiDatang');
+                              }),
+                          SizedBox(width: 20),
+                          _buttonAbsen(
+                              icon: Icons.logout,
+                              text: 'Absen Pulang',
+                              callback: () async {
+                                final geoDevice = await GeolocatorService()
+                                    .getDeviceLocation();
+                                context.read<GeolocationBloc>().add(
+                                    ChangePosition(LatLng(geoDevice.latitude,
+                                        geoDevice.longitude)));
+                                Navigator.of(context)
+                                    .pushNamed('/absensiPulang');
+                              }),
+                          SizedBox(width: 20),
+                          _buttonAbsen(
+                              icon: Icons.auto_stories,
+                              text: 'Histori Absen',
+                              callback: () {
+                                Navigator.of(context).pushNamed('/histori');
+                              }),
+                        ],
+                      ),
+                      SizedBox(height: 60),
+                      BlocBuilder<AbsenBloc, AbsenState>(
+                        builder: (context, state) {
+                          print(state);
+                          if (state is AbsenLoading)
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Jadwal Absen',
+                                  style: kHeaderStyle.copyWith(fontSize: 18),
+                                ),
+                                Text('-'),
+                                SizedBox(height: 20),
+                                _shimmerLoading(),
+                                SizedBox(height: 20),
+                                _shimmerLoading(),
+                              ],
+                            );
+                          else if (state is AbsenIsLoaded) {
+                            AbsenModel absen = state.absen;
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Jadwal Absen',
+                                  style: kHeaderStyle.copyWith(fontSize: 18),
+                                ),
+                                Text(state.absen.tanggal),
+                                SizedBox(height: 20),
+                                InfoAbsen(
+                                  icon: Icons.login,
+                                  text: 'Jam Datang',
+                                  jam: absen.jamDatang,
+                                  info: absen.infoAbsenDatang,
+                                  libur: absen.libur,
+                                ),
+                                SizedBox(height: 20),
+                                InfoAbsen(
+                                  icon: Icons.logout,
+                                  text: 'Jam Pulang',
+                                  jam: absen.jamPulang,
+                                  info: absen.infoAbsenPulang,
+                                  libur: absen.libur,
+                                ),
+                              ],
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+Widget _shimmerLoading() {
+  return Shimmer.fromColors(
+    baseColor: Colors.white,
+    highlightColor: primaryColor,
+    child: Container(
+      height: 60,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            offset: Offset(0.0, 1.0), //(x,y)
+            blurRadius: 3.0,
+          ),
+        ],
+      ),
+    ),
+  );
 }
