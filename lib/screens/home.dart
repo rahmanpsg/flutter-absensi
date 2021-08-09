@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:absensi/bloc/absen_bloc.dart';
 import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/bloc/geolocation_bloc.dart';
@@ -11,7 +9,6 @@ import 'package:absensi/widgets/infoAbsen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -90,6 +87,10 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context) => [
                 PopupMenuItem<int>(
                   value: 0,
+                  child: Text("Tentang"),
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
                   child: Row(
                     children: [
                       Icon(
@@ -105,8 +106,16 @@ class HomeScreen extends StatelessWidget {
                 ),
               ],
               onSelected: (item) {
-                authBloc.add(UserLoggedOut());
-                Navigator.of(context).pushReplacementNamed('/login');
+                switch (item) {
+                  case 0:
+                    Navigator.of(context).pushNamed('/tentang');
+                    break;
+                  case 1:
+                    authBloc.add(UserLoggedOut());
+                    Navigator.of(context).pushReplacementNamed('/login');
+                    break;
+                  default:
+                }
               },
             ),
           ],

@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/bloc/geolocation_bloc.dart';
 import 'package:absensi/bloc/login_bloc.dart';
+import 'package:absensi/screens/tentang.dart';
 import 'package:absensi/services/absen_service.dart';
 import 'package:absensi/services/authentication_service.dart';
 import 'package:absensi/services/geolocator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'bloc/absen_bloc.dart';
 import 'bloc/histori_bloc.dart';
@@ -85,6 +89,7 @@ class MyApp extends StatelessWidget {
             '/absensiDatang': (context) => AbsensiScreen(absen: 'Datang'),
             '/absensiPulang': (context) => AbsensiScreen(absen: 'Pulang'),
             '/histori': (context) => HistoriScreen(),
+            '/tentang': (context) => TentangScreen(),
           },
         ),
       ),

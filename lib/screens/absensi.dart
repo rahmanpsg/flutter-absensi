@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:absensi/bloc/geolocation_bloc.dart';
 import 'package:absensi/services/geolocator_service.dart';
 import 'package:absensi/styles/constant.dart';
@@ -13,6 +15,8 @@ class AbsensiScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Completer<GoogleMapController> _controller = Completer();
+
     return BlocBuilder<GeolocationBloc, GeolocationState>(
       builder: (context, state) {
         return Scaffold(
@@ -25,6 +29,32 @@ class AbsensiScreen extends StatelessWidget {
               ),
             ),
             actions: <Widget>[
+              IconButton(
+                icon: const Icon(
+                  Icons.location_searching,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  final geoDevice =
+                      await GeolocatorService().getDeviceLocation();
+
+                  await GeolocatorService().toMyPosition(
+                    LatLng(geoDevice.latitude, geoDevice.longitude),
+                    _controller,
+                  );
+
+                  final double _distance = GeolocatorService().inRadius(
+                      state.geolocation,
+                      LatLng(geoDevice.latitude, geoDevice.longitude));
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          "Anda berada ${(_distance / 1000).round()} KM dari lokasi absen"),
+                    ),
+                  );
+                },
+              ),
               IconButton(
                 icon: const Icon(
                   Icons.refresh,
@@ -40,8 +70,8 @@ class AbsensiScreen extends StatelessWidget {
                   final geoDevice =
                       await GeolocatorService().getDeviceLocation();
                   context.read<GeolocationBloc>().add(ChangePosition(
-                      // LatLng(geoDevice.latitude, geoDevice.longitude)));
-                      LatLng(-3.720254, 119.630227)));
+                      LatLng(geoDevice.latitude, geoDevice.longitude)));
+                  // LatLng(-3.9843736145260973, 119.65054606109925)));
                 },
               )
             ],
@@ -49,6 +79,7 @@ class AbsensiScreen extends StatelessWidget {
           body: MapAbsen(
             absen: absen,
             state: state,
+            controller: _controller,
           ),
         );
       },

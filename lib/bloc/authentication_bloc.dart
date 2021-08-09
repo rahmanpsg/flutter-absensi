@@ -36,7 +36,6 @@ class AuthenticationBloc
   Stream<AuthenticationState> _mapAppLoadedToState(AppLoaded event) async* {
     yield AuthenticationLoading();
     try {
-      await Future.delayed(Duration(milliseconds: 3000)); // a simulated delay
       final currentUser = await _authenticationService.getCurrentUser();
 
       if (currentUser != null) {

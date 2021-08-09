@@ -48,7 +48,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#F875AA"
-  image: assets/images/logo.png
+  image: assets/images/Absensi Karyawan.png
   android: true
   ios: false
 

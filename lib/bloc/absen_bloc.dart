@@ -27,7 +27,6 @@ class AbsenBloc extends Bloc<AbsenEvent, AbsenState> {
     yield AbsenLoading();
 
     try {
-      // await Future.delayed(Duration(milliseconds: 2000)); // a simulated delay
       final absenRule = await _absenService.getAbsenRule();
 
       if (absenRule != null) {

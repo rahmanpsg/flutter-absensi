@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:absensi/bloc/absen_bloc.dart';
@@ -18,14 +19,22 @@ class MapAbsen extends StatelessWidget {
     Key? key,
     required this.absen,
     required this.state,
+    required this.controller,
   }) : super(key: key);
 
   final String absen;
   final state;
+  final Completer<GoogleMapController> controller;
 
   @override
   Widget build(BuildContext context) {
     final absenBloc = BlocProvider.of<AbsenBloc>(context);
+
+    void mapCreated(GoogleMapController _controller) {
+      if (!controller.isCompleted) {
+        controller.complete(_controller);
+      }
+    }
 
     log(state.toString());
     return state is GeolocationLoading
@@ -42,6 +51,7 @@ class MapAbsen extends StatelessWidget {
                       ),
                       zoom: 14.4746,
                     ),
+                    onMapCreated: mapCreated,
                     circles: Set.from([state.circle]),
                     markers: Set.from([state.marker]),
                     zoomControlsEnabled: false,

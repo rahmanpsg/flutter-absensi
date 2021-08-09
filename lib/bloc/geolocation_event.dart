@@ -10,8 +10,9 @@ abstract class GeolocationEvent extends Equatable {
 class GeolocationLoaded extends GeolocationEvent {}
 
 class ChangePosition extends GeolocationEvent {
-  final LatLng position;
   ChangePosition(this.position);
+
+  final LatLng position;
 }
 
 class AuthenticationBiometric extends GeolocationEvent {}

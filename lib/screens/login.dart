@@ -58,18 +58,17 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Image(
-                      image: AssetImage("assets/images/logo.png"),
-                      width: 250.0,
+                      image: AssetImage("assets/images/Absensi Karyawan.png"),
                     ),
-                    SizedBox(height: 20),
-                    Text(
-                      "Absensi Karyawan \nPLTU Barru",
-                      textAlign: TextAlign.center,
-                      style: primaryStyle.copyWith(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    // SizedBox(height: 20),
+                    // Text(
+                    //   "Absensi Karyawan",
+                    //   textAlign: TextAlign.center,
+                    //   style: primaryStyle.copyWith(
+                    //     fontSize: 30.0,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
                     SizedBox(height: 30.0),
                     LoginForm()
                   ],

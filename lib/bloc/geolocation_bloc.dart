@@ -65,7 +65,9 @@ class GeolocationBloc extends Bloc<GeolocationEvent, GeolocationState> {
   }
 
   GeolocationState _mapChangePosition(
-      ChangePosition event, GeolocationState state) {
+    ChangePosition event,
+    GeolocationState state,
+  ) {
     final bool inRadius =
         _geolocatorService.inRadius(state.geolocation, event.position) <
             state.geolocation.radius;

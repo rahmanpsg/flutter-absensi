@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:absensi/app/api.dart';
 import 'package:absensi/models/geolocation_models.dart';
@@ -10,7 +11,6 @@ class GeolocatorService {
   Client client = Client();
 
   Future<GeolocationModel?> getGeolocation() async {
-    await Future.delayed(Duration(milliseconds: 1500));
     try {
       final _header = await AuthenticationService().setHeaderToken(headers);
 
@@ -28,6 +28,22 @@ class GeolocatorService {
   Future<Position> getDeviceLocation() async {
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.bestForNavigation,
+    );
+  }
+
+  Future toMyPosition(
+    LatLng position,
+    Completer<GoogleMapController> _controller,
+  ) async {
+    final GoogleMapController controller = await _controller.future;
+
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: position,
+          zoom: 14.4746,
+        ),
+      ),
     );
   }
 

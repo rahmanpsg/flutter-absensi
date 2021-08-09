@@ -37,8 +37,6 @@ class AuthenticationService {
     String password,
   ) async {
     try {
-      await Future.delayed(Duration(milliseconds: 1500));
-
       final url = '$BASE_URL/login/karyawan';
       final response = await client.post(Uri.parse(url),
           headers: headers,

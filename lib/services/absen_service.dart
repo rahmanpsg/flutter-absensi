@@ -12,7 +12,7 @@ class AbsenService {
   Client client = Client();
 
   Future<AbsenModel?> getAbsenRule() async {
-    await Future.delayed(Duration(milliseconds: 1500));
+    // await Future.delayed(Duration(milliseconds: 1500));
     try {
       final _header = await AuthenticationService().setHeaderToken(headers);
       final user = await AuthenticationService().getCurrentUser();
@@ -29,7 +29,7 @@ class AbsenService {
 
       res['tanggal'] = resAbsen['tanggal'];
       res['infoAbsenDatang'] = resAbsen['infoAbsenDatang'];
-      res['infoAbsenPulang'] = resAbsen['infoAbsenPulang'];
+      res['infoAbsenPulang'] = resAbsen['infoAbsenPulang'] ?? '';
 
       return new AbsenModel.fromJson(res);
     } catch (e) {
@@ -69,8 +69,8 @@ class AbsenService {
 
       final queryParameters = {'bulan': bulan, 'tahun': tahun};
 
-      final uri = Uri.http(
-        BASE_URL.replaceRange(0, 7, ''),
+      final uri = Uri.https(
+        BASE_URL.replaceRange(0, 8, ''),
         '/absen/${user!.id}',
         queryParameters,
       );
@@ -81,8 +81,6 @@ class AbsenService {
       );
 
       final res = jsonDecode(response.body);
-
-      log(res.toString());
 
       if (res != null) {
         final List<HistoriModel> historiList = List.generate(
@@ -95,6 +93,7 @@ class AbsenService {
         return <HistoriModel>[];
       }
     } catch (e) {
+      log(e.toString());
       return ResponseApiModel(
         error: true,
         message: 'Terjadi masalah yang tidak diketahui',

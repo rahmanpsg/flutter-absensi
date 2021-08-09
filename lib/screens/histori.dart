@@ -1,5 +1,4 @@
 import 'package:absensi/bloc/histori_bloc.dart';
-import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:absensi/widgets/cardHistori.dart';
 import 'package:flutter/material.dart';
@@ -30,23 +29,6 @@ class HistoriScreen extends StatelessWidget {
 
     List<String> listTahun =
         List.generate(3, (index) => (tahun - index).toString());
-
-    List<HistoriModel> listHistori = [
-      HistoriModel(
-        tanggal: '30 Juli 2021',
-        waktuDatang: '08:30',
-        infoAbsenDatang: 'Datang terlambat',
-        waktuPulang: '14:00',
-        infoAbsenPulang: 'Pulang cepat',
-      ),
-      HistoriModel(
-        tanggal: '30 Juli 2021',
-        waktuDatang: '08:30',
-        infoAbsenDatang: 'Datang terlambat',
-        waktuPulang: '14:00',
-        infoAbsenPulang: 'Pulang cepat',
-      ),
-    ];
 
     return Scaffold(
       appBar: AppBar(
