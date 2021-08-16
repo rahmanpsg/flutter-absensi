@@ -10,6 +10,8 @@ class HistoriScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+
     List<String> listBulan = [
       'Januari',
       'Februari',
@@ -48,12 +50,13 @@ class HistoriScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     _dropDownButton(
                       value: state.bulan,
                       list: listBulan,
                       hint: '- Pilih Bulan -',
-                      width: 220,
+                      width: (mediaQuery.size.width / 100) * 45.0,
                       callback: (String? value) async {
                         context
                             .read<HistoriBloc>()
@@ -68,7 +71,7 @@ class HistoriScreen extends StatelessWidget {
                       value: state.tahun,
                       list: listTahun,
                       hint: '- Pilih Tahun -',
-                      width: 150,
+                      width: (mediaQuery.size.width / 100) * 40.0,
                       callback: (String? value) {
                         context
                             .read<HistoriBloc>()
@@ -148,7 +151,7 @@ Widget _dropDownButton({
     width: width,
     child: Center(
       child: SizedBox(
-        width: width - 10,
+        width: width,
         child: ButtonTheme(
           alignedDropdown: true,
           child: DropdownButtonHideUnderline(

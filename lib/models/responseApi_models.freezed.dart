@@ -20,10 +20,14 @@ ResponseApiModel _$ResponseApiModelFromJson(Map<String, dynamic> json) {
 class _$ResponseApiModelTearOff {
   const _$ResponseApiModelTearOff();
 
-  $_ResponseApiModel call({required bool error, required String message}) {
+  $_ResponseApiModel call(
+      {required bool error,
+      required String message,
+      Map<String, dynamic> data = const {}}) {
     return $_ResponseApiModel(
       error: error,
       message: message,
+      data: data,
     );
   }
 
@@ -39,6 +43,7 @@ const $ResponseApiModel = _$ResponseApiModelTearOff();
 mixin _$ResponseApiModel {
   bool get error => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
+  Map<String, dynamic> get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +56,7 @@ abstract class $ResponseApiModelCopyWith<$Res> {
   factory $ResponseApiModelCopyWith(
           ResponseApiModel value, $Res Function(ResponseApiModel) then) =
       _$ResponseApiModelCopyWithImpl<$Res>;
-  $Res call({bool error, String message});
+  $Res call({bool error, String message, Map<String, dynamic> data});
 }
 
 /// @nodoc
@@ -67,6 +72,7 @@ class _$ResponseApiModelCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
     Object? message = freezed,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       error: error == freezed
@@ -77,6 +83,10 @@ class _$ResponseApiModelCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ));
   }
 }
@@ -88,7 +98,7 @@ abstract class $$_ResponseApiModelCopyWith<$Res>
           $_ResponseApiModel value, $Res Function($_ResponseApiModel) then) =
       _$$_ResponseApiModelCopyWithImpl<$Res>;
   @override
-  $Res call({bool error, String message});
+  $Res call({bool error, String message, Map<String, dynamic> data});
 }
 
 /// @nodoc
@@ -106,6 +116,7 @@ class _$$_ResponseApiModelCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
     Object? message = freezed,
+    Object? data = freezed,
   }) {
     return _then($_ResponseApiModel(
       error: error == freezed
@@ -116,6 +127,10 @@ class _$$_ResponseApiModelCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ));
   }
 }
@@ -123,7 +138,8 @@ class _$$_ResponseApiModelCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$$_ResponseApiModel implements $_ResponseApiModel {
-  const _$$_ResponseApiModel({required this.error, required this.message});
+  const _$$_ResponseApiModel(
+      {required this.error, required this.message, this.data = const {}});
 
   factory _$$_ResponseApiModel.fromJson(Map<String, dynamic> json) =>
       _$_$$_ResponseApiModelFromJson(json);
@@ -132,10 +148,13 @@ class _$$_ResponseApiModel implements $_ResponseApiModel {
   final bool error;
   @override
   final String message;
+  @JsonKey(defaultValue: const {})
+  @override
+  final Map<String, dynamic> data;
 
   @override
   String toString() {
-    return 'ResponseApiModel(error: $error, message: $message)';
+    return 'ResponseApiModel(error: $error, message: $message, data: $data)';
   }
 
   @override
@@ -145,14 +164,18 @@ class _$$_ResponseApiModel implements $_ResponseApiModel {
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)) &&
             (identical(other.message, message) ||
-                const DeepCollectionEquality().equals(other.message, message)));
+                const DeepCollectionEquality()
+                    .equals(other.message, message)) &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(error) ^
-      const DeepCollectionEquality().hash(message);
+      const DeepCollectionEquality().hash(message) ^
+      const DeepCollectionEquality().hash(data);
 
   @JsonKey(ignore: true)
   @override
@@ -167,7 +190,9 @@ class _$$_ResponseApiModel implements $_ResponseApiModel {
 
 abstract class $_ResponseApiModel implements ResponseApiModel {
   const factory $_ResponseApiModel(
-      {required bool error, required String message}) = _$$_ResponseApiModel;
+      {required bool error,
+      required String message,
+      Map<String, dynamic> data}) = _$$_ResponseApiModel;
 
   factory $_ResponseApiModel.fromJson(Map<String, dynamic> json) =
       _$$_ResponseApiModel.fromJson;
@@ -176,6 +201,8 @@ abstract class $_ResponseApiModel implements ResponseApiModel {
   bool get error => throw _privateConstructorUsedError;
   @override
   String get message => throw _privateConstructorUsedError;
+  @override
+  Map<String, dynamic> get data => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   $$_ResponseApiModelCopyWith<$_ResponseApiModel> get copyWith =>

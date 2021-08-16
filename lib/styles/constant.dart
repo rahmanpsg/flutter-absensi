@@ -5,14 +5,18 @@ const primaryColor = Color(0xFFF875AA);
 const secondaryColor = Color(0xFFFBACCC);
 const dangerColor = Color(0xFFF1D1D0);
 const bgColor = Color(0xFFF4F9F9);
+const yellowColor = Color(0xFFf5f522);
+const orangeColor = Color(0xFFffbd2e);
+const greenColor = Color(0xFF4bd662);
+const blueColor = Color(0xFF22e3f5);
 
 // Text Style
 const primaryStyle =
-    TextStyle(fontFamily: 'Gothic', fontSize: 14, color: Colors.white);
+    TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Colors.white);
 const kLabelStyle =
-    TextStyle(fontFamily: 'Gothic', fontSize: 14, color: Colors.white);
+    TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Colors.white);
 const kHintStyle =
-    TextStyle(fontFamily: 'Gothic', fontSize: 14, color: Colors.white60);
+    TextStyle(fontFamily: 'Poppins', fontSize: 14, color: Colors.white60);
 const kHeaderStyle = TextStyle(
   fontFamily: 'Gothic',
   fontSize: 20,

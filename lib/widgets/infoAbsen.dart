@@ -1,25 +1,31 @@
+import 'package:absensi/models/absen_models.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 class InfoAbsen extends StatelessWidget {
   const InfoAbsen({
     Key? key,
     required this.icon,
-    required this.text,
-    required this.jam,
-    required this.info,
-    required this.libur,
+    required this.tipe,
+    required this.absen,
   }) : super(key: key);
 
   final IconData icon;
-  final String text;
-  final String jam;
-  final String info;
-  final bool libur;
+  final String tipe;
+  final AbsenModel absen;
 
   @override
   Widget build(BuildContext context) {
+    final String _teks = tipe == 'datang' ? 'Jam Datang' : 'Jam Pulang';
+    final String _jam = tipe == 'datang' ? absen.jamDatang : absen.jamPulang;
+    final String _info =
+        tipe == 'datang' ? absen.infoAbsenDatang : absen.infoAbsenPulang;
+    final bool _libur = absen.libur || absen.izin || absen.cuti;
+    String _liburTeks = 'Libur';
+    if (absen.libur) _liburTeks = 'Libur';
+    if (absen.izin) _liburTeks = 'Izin';
+    if (absen.cuti) _liburTeks = 'Cuti';
+
     return Column(
       children: [
         Container(
@@ -47,7 +53,7 @@ class InfoAbsen extends StatelessWidget {
               SizedBox(width: 25),
               Expanded(
                 child: Text(
-                  text,
+                  _teks,
                   style: kHeaderStyle.copyWith(fontSize: 18),
                 ),
               ),
@@ -61,7 +67,7 @@ class InfoAbsen extends StatelessWidget {
                 width: 70,
                 child: Center(
                   child: Text(
-                    libur ? 'Libur' : jam,
+                    _info == '' && _libur ? _liburTeks : _jam,
                     style: kHeaderStyle.copyWith(
                       color: Colors.white,
                     ),
@@ -71,7 +77,7 @@ class InfoAbsen extends StatelessWidget {
             ]),
           ),
         ),
-        info != ''
+        tipe == 'datang' && (_info != '' || !_libur)
             ? Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 height: 30.0,
@@ -85,7 +91,7 @@ class InfoAbsen extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    '*$info',
+                    '*$_info',
                     style: primaryStyle,
                   ),
                 ),

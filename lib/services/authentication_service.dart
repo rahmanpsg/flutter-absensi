@@ -13,23 +13,38 @@ class AuthenticationService {
 
   Future<UserModel?> getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user = prefs.getString('user');
+    String? token = prefs.getString('token');
 
     // print(user);
 
-    if (user != null) {
-      final json = jsonDecode(user);
-      return UserModel.fromJson(json);
+    if (token != null) {
+      final url = '$BASE_URL/login/cek/$token';
+      final response = await client.get(Uri.parse(url));
+
+      final res = jsonDecode(response.body);
+
+      return UserModel.fromJson(res);
     }
 
     return null;
   }
 
+  Future<String?> getUserID() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userID = prefs.getString("userID");
+
+      return userID;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<bool> isLogged() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user = prefs.getString('user');
+    String? token = prefs.getString('token');
 
-    return user != null;
+    return token != null;
   }
 
   Future signIn(
@@ -54,7 +69,8 @@ class AuthenticationService {
       UserModel user = UserModel.fromJson(res['user']);
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('user', jsonEncode(user));
+      prefs.setString('token', user.token.toString());
+      prefs.setString('userID', user.id.toString());
 
       return user;
     } catch (e) {
@@ -67,7 +83,8 @@ class AuthenticationService {
 
   Future<void> signOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('user');
+    prefs.remove('token');
+    prefs.remove('userID');
   }
 
   static Future<bool> authenticateWithBiometrics() async {
@@ -95,12 +112,11 @@ class AuthenticationService {
 
   Future setHeaderToken(Map<String, String> header) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? user = prefs.getString('user');
+    String? token = prefs.getString('token');
 
-    if (user != null) {
-      UserModel userModel = UserModel.fromJson(jsonDecode(user));
+    if (token != null) {
       final newHeader = header;
-      newHeader['x-access-token'] = userModel.token ?? '';
+      newHeader['x-access-token'] = token;
       return newHeader;
     }
 

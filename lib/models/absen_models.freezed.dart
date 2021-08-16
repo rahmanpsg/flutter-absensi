@@ -25,10 +25,12 @@ class _$AbsenModelTearOff {
       required String tanggal,
       required String jamDatang,
       required String jamPulang,
-      required String infoAbsenDatang,
-      required String infoAbsenPulang,
+      String infoAbsenDatang = "",
+      String infoAbsenPulang = "",
       required bool lembur,
-      required bool libur}) {
+      required bool libur,
+      bool izin = false,
+      bool cuti = false}) {
     return $_AbsenModel(
       hari: hari,
       tanggal: tanggal,
@@ -38,6 +40,8 @@ class _$AbsenModelTearOff {
       infoAbsenPulang: infoAbsenPulang,
       lembur: lembur,
       libur: libur,
+      izin: izin,
+      cuti: cuti,
     );
   }
 
@@ -59,6 +63,8 @@ mixin _$AbsenModel {
   String get infoAbsenPulang => throw _privateConstructorUsedError;
   bool get lembur => throw _privateConstructorUsedError;
   bool get libur => throw _privateConstructorUsedError;
+  bool get izin => throw _privateConstructorUsedError;
+  bool get cuti => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -79,7 +85,9 @@ abstract class $AbsenModelCopyWith<$Res> {
       String infoAbsenDatang,
       String infoAbsenPulang,
       bool lembur,
-      bool libur});
+      bool libur,
+      bool izin,
+      bool cuti});
 }
 
 /// @nodoc
@@ -100,6 +108,8 @@ class _$AbsenModelCopyWithImpl<$Res> implements $AbsenModelCopyWith<$Res> {
     Object? infoAbsenPulang = freezed,
     Object? lembur = freezed,
     Object? libur = freezed,
+    Object? izin = freezed,
+    Object? cuti = freezed,
   }) {
     return _then(_value.copyWith(
       hari: hari == freezed
@@ -134,6 +144,14 @@ class _$AbsenModelCopyWithImpl<$Res> implements $AbsenModelCopyWith<$Res> {
           ? _value.libur
           : libur // ignore: cast_nullable_to_non_nullable
               as bool,
+      izin: izin == freezed
+          ? _value.izin
+          : izin // ignore: cast_nullable_to_non_nullable
+              as bool,
+      cuti: cuti == freezed
+          ? _value.cuti
+          : cuti // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -153,7 +171,9 @@ abstract class $$_AbsenModelCopyWith<$Res>
       String infoAbsenDatang,
       String infoAbsenPulang,
       bool lembur,
-      bool libur});
+      bool libur,
+      bool izin,
+      bool cuti});
 }
 
 /// @nodoc
@@ -176,6 +196,8 @@ class _$$_AbsenModelCopyWithImpl<$Res> extends _$AbsenModelCopyWithImpl<$Res>
     Object? infoAbsenPulang = freezed,
     Object? lembur = freezed,
     Object? libur = freezed,
+    Object? izin = freezed,
+    Object? cuti = freezed,
   }) {
     return _then($_AbsenModel(
       hari: hari == freezed
@@ -210,6 +232,14 @@ class _$$_AbsenModelCopyWithImpl<$Res> extends _$AbsenModelCopyWithImpl<$Res>
           ? _value.libur
           : libur // ignore: cast_nullable_to_non_nullable
               as bool,
+      izin: izin == freezed
+          ? _value.izin
+          : izin // ignore: cast_nullable_to_non_nullable
+              as bool,
+      cuti: cuti == freezed
+          ? _value.cuti
+          : cuti // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -222,10 +252,12 @@ class _$$_AbsenModel implements $_AbsenModel {
       required this.tanggal,
       required this.jamDatang,
       required this.jamPulang,
-      required this.infoAbsenDatang,
-      required this.infoAbsenPulang,
+      this.infoAbsenDatang = "",
+      this.infoAbsenPulang = "",
       required this.lembur,
-      required this.libur});
+      required this.libur,
+      this.izin = false,
+      this.cuti = false});
 
   factory _$$_AbsenModel.fromJson(Map<String, dynamic> json) =>
       _$_$$_AbsenModelFromJson(json);
@@ -238,18 +270,26 @@ class _$$_AbsenModel implements $_AbsenModel {
   final String jamDatang;
   @override
   final String jamPulang;
+  @JsonKey(defaultValue: "")
   @override
   final String infoAbsenDatang;
+  @JsonKey(defaultValue: "")
   @override
   final String infoAbsenPulang;
   @override
   final bool lembur;
   @override
   final bool libur;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool izin;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool cuti;
 
   @override
   String toString() {
-    return 'AbsenModel(hari: $hari, tanggal: $tanggal, jamDatang: $jamDatang, jamPulang: $jamPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang, lembur: $lembur, libur: $libur)';
+    return 'AbsenModel(hari: $hari, tanggal: $tanggal, jamDatang: $jamDatang, jamPulang: $jamPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang, lembur: $lembur, libur: $libur, izin: $izin, cuti: $cuti)';
   }
 
   @override
@@ -276,7 +316,11 @@ class _$$_AbsenModel implements $_AbsenModel {
             (identical(other.lembur, lembur) ||
                 const DeepCollectionEquality().equals(other.lembur, lembur)) &&
             (identical(other.libur, libur) ||
-                const DeepCollectionEquality().equals(other.libur, libur)));
+                const DeepCollectionEquality().equals(other.libur, libur)) &&
+            (identical(other.izin, izin) ||
+                const DeepCollectionEquality().equals(other.izin, izin)) &&
+            (identical(other.cuti, cuti) ||
+                const DeepCollectionEquality().equals(other.cuti, cuti)));
   }
 
   @override
@@ -289,7 +333,9 @@ class _$$_AbsenModel implements $_AbsenModel {
       const DeepCollectionEquality().hash(infoAbsenDatang) ^
       const DeepCollectionEquality().hash(infoAbsenPulang) ^
       const DeepCollectionEquality().hash(lembur) ^
-      const DeepCollectionEquality().hash(libur);
+      const DeepCollectionEquality().hash(libur) ^
+      const DeepCollectionEquality().hash(izin) ^
+      const DeepCollectionEquality().hash(cuti);
 
   @JsonKey(ignore: true)
   @override
@@ -308,10 +354,12 @@ abstract class $_AbsenModel implements AbsenModel {
       required String tanggal,
       required String jamDatang,
       required String jamPulang,
-      required String infoAbsenDatang,
-      required String infoAbsenPulang,
+      String infoAbsenDatang,
+      String infoAbsenPulang,
       required bool lembur,
-      required bool libur}) = _$$_AbsenModel;
+      required bool libur,
+      bool izin,
+      bool cuti}) = _$$_AbsenModel;
 
   factory $_AbsenModel.fromJson(Map<String, dynamic> json) =
       _$$_AbsenModel.fromJson;
@@ -332,6 +380,10 @@ abstract class $_AbsenModel implements AbsenModel {
   bool get lembur => throw _privateConstructorUsedError;
   @override
   bool get libur => throw _privateConstructorUsedError;
+  @override
+  bool get izin => throw _privateConstructorUsedError;
+  @override
+  bool get cuti => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   $$_AbsenModelCopyWith<$_AbsenModel> get copyWith =>

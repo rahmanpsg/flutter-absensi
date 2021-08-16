@@ -12,10 +12,12 @@ _$$_AbsenModel _$_$$_AbsenModelFromJson(Map<String, dynamic> json) {
     tanggal: json['tanggal'] as String,
     jamDatang: json['jamDatang'] as String,
     jamPulang: json['jamPulang'] as String,
-    infoAbsenDatang: json['infoAbsenDatang'] as String,
-    infoAbsenPulang: json['infoAbsenPulang'] as String,
+    infoAbsenDatang: json['infoAbsenDatang'] as String? ?? '',
+    infoAbsenPulang: json['infoAbsenPulang'] as String? ?? '',
     lembur: json['lembur'] as bool,
     libur: json['libur'] as bool,
+    izin: json['izin'] as bool? ?? false,
+    cuti: json['cuti'] as bool? ?? false,
   );
 }
 
@@ -29,4 +31,6 @@ Map<String, dynamic> _$_$$_AbsenModelToJson(_$$_AbsenModel instance) =>
       'infoAbsenPulang': instance.infoAbsenPulang,
       'lembur': instance.lembur,
       'libur': instance.libur,
+      'izin': instance.izin,
+      'cuti': instance.cuti,
     };

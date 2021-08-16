@@ -21,10 +21,10 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
+  flutter:
+    sdk: flutter
   flutter_bloc: ^7.1.0
   geolocator: ^7.4.0
   google_maps_flutter: ^2.0.6
@@ -39,11 +39,10 @@ dependencies:
   shimmer: ^2.0.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
   build_runner: ^2.0.4
   flutter_native_splash: ^1.2.0
+  flutter_test:
+    sdk: flutter
   freezed: ^0.14.2
 
 flutter_native_splash:

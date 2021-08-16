@@ -8,6 +8,7 @@ class ResponseApiModel with _$ResponseApiModel {
   const factory ResponseApiModel({
     required bool error,
     required String message,
+    @Default({}) Map<String, dynamic> data,
   }) = $_ResponseApiModel;
 
   factory ResponseApiModel.fromJson(Map<String, dynamic> json) =>

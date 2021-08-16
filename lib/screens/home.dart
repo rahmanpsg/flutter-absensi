@@ -9,42 +9,17 @@ import 'package:absensi/widgets/infoAbsen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-  Widget _buttonAbsen({
-    required IconData icon,
-    required String text,
-    required Function callback,
-  }) {
-    return Column(
-      children: <Widget>[
-        TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: primaryColor,
-            padding: EdgeInsets.all(20),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0)),
-          ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 50,
-          ),
-          onPressed: () => callback(),
-        ),
-        Text(text)
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final absenBloc = BlocProvider.of<AbsenBloc>(context);
+    final _authBloc = BlocProvider.of<AuthenticationBloc>(context);
+    final _absenBloc = BlocProvider.of<AbsenBloc>(context);
 
     RefreshController _refreshController =
         RefreshController(initialRefresh: false);
@@ -71,6 +46,7 @@ class HomeScreen extends StatelessWidget {
         return false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
@@ -111,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.of(context).pushNamed('/tentang');
                     break;
                   case 1:
-                    authBloc.add(UserLoggedOut());
+                    _authBloc.add(UserLoggedOut());
                     Navigator.of(context).pushReplacementNamed('/login');
                     break;
                   default:
@@ -120,15 +96,15 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: SafeArea(
-          child: SmartRefresher(
-            controller: _refreshController,
-            onRefresh: () async {
-              absenBloc.add(AbsenLoaded());
+        body: SmartRefresher(
+          controller: _refreshController,
+          onRefresh: () async {
+            _absenBloc.add(AbsenLoaded());
 
-              await Future.delayed(Duration(milliseconds: 1000));
-              _refreshController.refreshCompleted();
-            },
+            await Future.delayed(Duration(milliseconds: 1000));
+            _refreshController.refreshCompleted();
+          },
+          child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -140,100 +116,180 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 15),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          _buttonAbsen(
+                  child: BlocBuilder<AbsenBloc, AbsenState>(
+                    builder: (context, state) {
+                      print("===> $state");
+                      if (state is AbsenLoading)
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _buttonAbsenLoading(),
+                                _buttonAbsenLoading(),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                _buttonAbsenLoading(size: 80),
+                                _buttonAbsenLoading(size: 80),
+                                _buttonAbsenLoading(size: 80),
+                              ],
+                            ),
+                            SizedBox(height: 40),
+                            Text(
+                              'Jadwal Absen',
+                              style: kHeaderStyle.copyWith(fontSize: 18),
+                            ),
+                            Text('-'),
+                            SizedBox(height: 20),
+                            _shimmerLoading(),
+                            SizedBox(height: 20),
+                            _shimmerLoading(),
+                          ],
+                        );
+                      else if (state is AbsenIsLoaded) {
+                        AbsenModel absen = state.absen;
+                        bool buttonDisable =
+                            absen.libur || absen.izin || absen.cuti;
+
+                        DateTime now = new DateTime.now();
+                        List tanggal = absen.tanggal
+                            .split('-')
+                            .map((e) => int.parse(e))
+                            .toList();
+                        List jam = absen.jamPulang
+                            .split(':')
+                            .map((e) => int.parse(e))
+                            .toList();
+                        DateTime jamPulang = new DateTime(
+                          tanggal[2],
+                          tanggal[1],
+                          tanggal[0],
+                          jam[0],
+                          jam[1],
+                        );
+
+                        bool buttonPulangDisable = jamPulang.isAfter(now);
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                _buttonAbsen(
+                                    disabled: buttonDisable,
+                                    size: 25,
+                                    icon: Icons.login,
+                                    text: 'Absen Datang',
+                                    callback: () async {
+                                      final geoDevice =
+                                          await GeolocatorService()
+                                              .getDeviceLocation();
+                                      context.read<GeolocationBloc>().add(
+                                          ChangePosition(LatLng(
+                                              geoDevice.latitude,
+                                              geoDevice.longitude)));
+                                      Navigator.of(context)
+                                          .pushNamed('/absensiDatang');
+                                    }),
+                                SizedBox(width: 20),
+                                _buttonAbsen(
+                                    disabled:
+                                        buttonDisable || buttonPulangDisable,
+                                    size: 25,
+                                    icon: Icons.logout,
+                                    text: 'Absen Pulang',
+                                    callback: () async {
+                                      final geoDevice =
+                                          await GeolocatorService()
+                                              .getDeviceLocation();
+                                      context.read<GeolocationBloc>().add(
+                                          ChangePosition(LatLng(
+                                              geoDevice.latitude,
+                                              geoDevice.longitude)));
+                                      Navigator.of(context)
+                                          .pushNamed('/absensiPulang');
+                                    }),
+                              ],
+                            ),
+                            SizedBox(height: 25),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                _buttonAbsen(
+                                    size: 15,
+                                    icon: Icons.compare_arrows_rounded,
+                                    text: 'Izin',
+                                    callback: () async {
+                                      Navigator.of(context).pushNamed('/izin');
+                                    }),
+                                SizedBox(width: 20),
+                                _buttonAbsen(
+                                    size: 15,
+                                    icon: Icons.calendar_today_rounded,
+                                    text: 'Cuti',
+                                    callback: () async {
+                                      Navigator.of(context).pushNamed('/cuti');
+                                    }),
+                                SizedBox(width: 20),
+                                _buttonAbsen(
+                                    size: 15,
+                                    icon: Icons.auto_stories,
+                                    text: 'Histori Absen',
+                                    callback: () {
+                                      Navigator.of(context)
+                                          .pushNamed('/histori');
+                                    }),
+                              ],
+                            ),
+                            SizedBox(height: 40),
+                            Text(
+                              'Jadwal Absen',
+                              style: kHeaderStyle.copyWith(fontSize: 18),
+                            ),
+                            Text(state.absen.tanggal),
+                            SizedBox(height: 20),
+                            InfoAbsen(
                               icon: Icons.login,
-                              text: 'Absen Datang',
-                              callback: () async {
-                                final geoDevice = await GeolocatorService()
-                                    .getDeviceLocation();
-                                context.read<GeolocationBloc>().add(
-                                    ChangePosition(LatLng(geoDevice.latitude,
-                                        geoDevice.longitude)));
-                                Navigator.of(context)
-                                    .pushNamed('/absensiDatang');
-                              }),
-                          SizedBox(width: 20),
-                          _buttonAbsen(
+                              tipe: 'datang',
+                              absen: absen,
+                            ),
+                            SizedBox(height: 20),
+                            InfoAbsen(
                               icon: Icons.logout,
-                              text: 'Absen Pulang',
-                              callback: () async {
-                                final geoDevice = await GeolocatorService()
-                                    .getDeviceLocation();
-                                context.read<GeolocationBloc>().add(
-                                    ChangePosition(LatLng(geoDevice.latitude,
-                                        geoDevice.longitude)));
-                                Navigator.of(context)
-                                    .pushNamed('/absensiPulang');
-                              }),
-                          SizedBox(width: 20),
-                          _buttonAbsen(
-                              icon: Icons.auto_stories,
-                              text: 'Histori Absen',
-                              callback: () {
-                                Navigator.of(context).pushNamed('/histori');
-                              }),
-                        ],
-                      ),
-                      SizedBox(height: 60),
-                      BlocBuilder<AbsenBloc, AbsenState>(
-                        builder: (context, state) {
-                          print(state);
-                          if (state is AbsenLoading)
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Jadwal Absen',
-                                  style: kHeaderStyle.copyWith(fontSize: 18),
-                                ),
-                                Text('-'),
-                                SizedBox(height: 20),
-                                _shimmerLoading(),
-                                SizedBox(height: 20),
-                                _shimmerLoading(),
-                              ],
-                            );
-                          else if (state is AbsenIsLoaded) {
-                            AbsenModel absen = state.absen;
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Jadwal Absen',
-                                  style: kHeaderStyle.copyWith(fontSize: 18),
-                                ),
-                                Text(state.absen.tanggal),
-                                SizedBox(height: 20),
-                                InfoAbsen(
-                                  icon: Icons.login,
-                                  text: 'Jam Datang',
-                                  jam: absen.jamDatang,
-                                  info: absen.infoAbsenDatang,
-                                  libur: absen.libur,
-                                ),
-                                SizedBox(height: 20),
-                                InfoAbsen(
-                                  icon: Icons.logout,
-                                  text: 'Jam Pulang',
-                                  jam: absen.jamPulang,
-                                  info: absen.infoAbsenPulang,
-                                  libur: absen.libur,
-                                ),
-                              ],
-                            );
-                          }
-                          return Container();
-                        },
-                      ),
-                    ],
+                              tipe: 'pulang',
+                              absen: absen,
+                            )
+                          ],
+                        );
+                      } else if (state is AbsenFailure) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Lottie.asset(
+                              'assets/animations/error.json',
+                              height: 200,
+                            ),
+                            Text(
+                              state.message,
+                              style: kHeaderStyle,
+                            )
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                 ),
               ],
@@ -243,6 +299,52 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buttonAbsen({
+  bool disabled = false,
+  required double size,
+  required IconData icon,
+  required String text,
+  required Function callback,
+}) {
+  return Column(
+    children: <Widget>[
+      TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: disabled ? secondaryColor : primaryColor,
+          padding: EdgeInsets.all(size),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        ),
+        child: Icon(
+          icon,
+          color: Colors.white,
+          size: 50,
+        ),
+        onPressed: () => disabled ? null : callback(),
+      ),
+      Text(text)
+    ],
+  );
+}
+
+Widget _buttonAbsenLoading({double size = 100}) {
+  return Shimmer.fromColors(
+    baseColor: secondaryColor,
+    highlightColor: Colors.white,
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          color: secondaryColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+    ),
+  );
 }
 
 Widget _shimmerLoading() {

@@ -39,7 +39,12 @@ class HeaderHome extends StatelessWidget {
                         // child: Image.network(
                         //   'https://img.a.transfermarkt.technology/portrait/big/8198-1626161872.jpg?lm=1',
                         // ),
-                        child: Image.memory(base64Decode(state.user.image)),
+                        child: state.user.image != null
+                            ? Image.memory(base64Decode(state.user.image))
+                            : Image(
+                                image: AssetImage("assets/images/user.png"),
+                                width: 100,
+                              ),
                       ),
                       SizedBox(width: 20),
                       Expanded(

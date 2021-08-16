@@ -10,10 +10,12 @@ class AbsenModel with _$AbsenModel {
     required String tanggal,
     required String jamDatang,
     required String jamPulang,
-    required String infoAbsenDatang,
-    required String infoAbsenPulang,
+    @Default("") String infoAbsenDatang,
+    @Default("") String infoAbsenPulang,
     required bool lembur,
     required bool libur,
+    @Default(false) bool izin,
+    @Default(false) bool cuti,
   }) = $_AbsenModel;
 
   factory AbsenModel.fromJson(Map<String, dynamic> json) =>

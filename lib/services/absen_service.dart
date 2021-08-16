@@ -15,21 +15,23 @@ class AbsenService {
     // await Future.delayed(Duration(milliseconds: 1500));
     try {
       final _header = await AuthenticationService().setHeaderToken(headers);
-      final user = await AuthenticationService().getCurrentUser();
+      final userID = await AuthenticationService().getUserID();
 
       final url = '$BASE_URL/rule';
       final response = await client.get(Uri.parse(url), headers: _header);
 
-      final urlAbsen = '$BASE_URL/absen/hari/${user!.id}';
+      final urlAbsen = '$BASE_URL/absen/hari/$userID';
       final responseAbsen =
           await client.get(Uri.parse(urlAbsen), headers: _header);
 
       final res = jsonDecode(response.body);
       final resAbsen = jsonDecode(responseAbsen.body);
 
-      res['tanggal'] = resAbsen['tanggal'];
-      res['infoAbsenDatang'] = resAbsen['infoAbsenDatang'];
-      res['infoAbsenPulang'] = resAbsen['infoAbsenPulang'] ?? '';
+      // res['tanggal'] = resAbsen['tanggal'];
+      // res['infoAbsenDatang'] = resAbsen['infoAbsenDatang'];
+      // res['infoAbsenPulang'] = resAbsen['infoAbsenPulang'];
+
+      res.addAll(resAbsen);
 
       return new AbsenModel.fromJson(res);
     } catch (e) {
@@ -40,9 +42,9 @@ class AbsenService {
   Future<ResponseApiModel> setAbsen(String tipe) async {
     try {
       final _header = await AuthenticationService().setHeaderToken(headers);
-      final user = await AuthenticationService().getCurrentUser();
+      final userID = await AuthenticationService().getUserID();
 
-      final url = '$BASE_URL/absen/$tipe/${user!.id}';
+      final url = '$BASE_URL/absen/$tipe/$userID';
       final response = await client.post(Uri.parse(url), headers: _header);
 
       final res = jsonDecode(response.body);
@@ -65,13 +67,18 @@ class AbsenService {
   Future getAbsenHistori(String bulan, String tahun) async {
     try {
       final _header = await AuthenticationService().setHeaderToken(headers);
-      final user = await AuthenticationService().getCurrentUser();
+      final userID = await AuthenticationService().getUserID();
 
       final queryParameters = {'bulan': bulan, 'tahun': tahun};
 
+      // final uri = Uri.http(
+      //   BASE_URL.replaceRange(0, 7, ''),
+      //   '/absen/$userID',
+      //   queryParameters,
+      // );
       final uri = Uri.https(
         BASE_URL.replaceRange(0, 8, ''),
-        '/absen/${user!.id}',
+        '/absen/$userID',
         queryParameters,
       );
 

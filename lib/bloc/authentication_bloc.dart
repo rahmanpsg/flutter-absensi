@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:absensi/models/user_models.dart';
 import 'package:absensi/services/authentication_service.dart';
@@ -44,6 +45,7 @@ class AuthenticationBloc
         yield AuthenticationOnNotAuthenticated();
       }
     } catch (e) {
+      log(e.toString());
       yield AuthenticationFailure(message: 'Terjadi masalah');
     }
   }
