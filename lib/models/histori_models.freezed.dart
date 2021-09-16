@@ -22,12 +22,14 @@ class _$HistoriModelTearOff {
 
   $_HistoriModel call(
       {required String tanggal,
+      required String status,
       required String waktuDatang,
       required String waktuPulang,
       required String infoAbsenDatang,
       required String infoAbsenPulang}) {
     return $_HistoriModel(
       tanggal: tanggal,
+      status: status,
       waktuDatang: waktuDatang,
       waktuPulang: waktuPulang,
       infoAbsenDatang: infoAbsenDatang,
@@ -46,6 +48,7 @@ const $HistoriModel = _$HistoriModelTearOff();
 /// @nodoc
 mixin _$HistoriModel {
   String get tanggal => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
   String get waktuDatang => throw _privateConstructorUsedError;
   String get waktuPulang => throw _privateConstructorUsedError;
   String get infoAbsenDatang => throw _privateConstructorUsedError;
@@ -64,6 +67,7 @@ abstract class $HistoriModelCopyWith<$Res> {
       _$HistoriModelCopyWithImpl<$Res>;
   $Res call(
       {String tanggal,
+      String status,
       String waktuDatang,
       String waktuPulang,
       String infoAbsenDatang,
@@ -81,6 +85,7 @@ class _$HistoriModelCopyWithImpl<$Res> implements $HistoriModelCopyWith<$Res> {
   @override
   $Res call({
     Object? tanggal = freezed,
+    Object? status = freezed,
     Object? waktuDatang = freezed,
     Object? waktuPulang = freezed,
     Object? infoAbsenDatang = freezed,
@@ -90,6 +95,10 @@ class _$HistoriModelCopyWithImpl<$Res> implements $HistoriModelCopyWith<$Res> {
       tanggal: tanggal == freezed
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       waktuDatang: waktuDatang == freezed
           ? _value.waktuDatang
@@ -120,6 +129,7 @@ abstract class $$_HistoriModelCopyWith<$Res>
   @override
   $Res call(
       {String tanggal,
+      String status,
       String waktuDatang,
       String waktuPulang,
       String infoAbsenDatang,
@@ -140,6 +150,7 @@ class _$$_HistoriModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? tanggal = freezed,
+    Object? status = freezed,
     Object? waktuDatang = freezed,
     Object? waktuPulang = freezed,
     Object? infoAbsenDatang = freezed,
@@ -149,6 +160,10 @@ class _$$_HistoriModelCopyWithImpl<$Res>
       tanggal: tanggal == freezed
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
       waktuDatang: waktuDatang == freezed
           ? _value.waktuDatang
@@ -175,6 +190,7 @@ class _$$_HistoriModelCopyWithImpl<$Res>
 class _$$_HistoriModel implements $_HistoriModel {
   const _$$_HistoriModel(
       {required this.tanggal,
+      required this.status,
       required this.waktuDatang,
       required this.waktuPulang,
       required this.infoAbsenDatang,
@@ -186,6 +202,8 @@ class _$$_HistoriModel implements $_HistoriModel {
   @override
   final String tanggal;
   @override
+  final String status;
+  @override
   final String waktuDatang;
   @override
   final String waktuPulang;
@@ -196,7 +214,7 @@ class _$$_HistoriModel implements $_HistoriModel {
 
   @override
   String toString() {
-    return 'HistoriModel(tanggal: $tanggal, waktuDatang: $waktuDatang, waktuPulang: $waktuPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang)';
+    return 'HistoriModel(tanggal: $tanggal, status: $status, waktuDatang: $waktuDatang, waktuPulang: $waktuPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang)';
   }
 
   @override
@@ -206,6 +224,8 @@ class _$$_HistoriModel implements $_HistoriModel {
             (identical(other.tanggal, tanggal) ||
                 const DeepCollectionEquality()
                     .equals(other.tanggal, tanggal)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)) &&
             (identical(other.waktuDatang, waktuDatang) ||
                 const DeepCollectionEquality()
                     .equals(other.waktuDatang, waktuDatang)) &&
@@ -224,6 +244,7 @@ class _$$_HistoriModel implements $_HistoriModel {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(tanggal) ^
+      const DeepCollectionEquality().hash(status) ^
       const DeepCollectionEquality().hash(waktuDatang) ^
       const DeepCollectionEquality().hash(waktuPulang) ^
       const DeepCollectionEquality().hash(infoAbsenDatang) ^
@@ -243,6 +264,7 @@ class _$$_HistoriModel implements $_HistoriModel {
 abstract class $_HistoriModel implements HistoriModel {
   const factory $_HistoriModel(
       {required String tanggal,
+      required String status,
       required String waktuDatang,
       required String waktuPulang,
       required String infoAbsenDatang,
@@ -253,6 +275,8 @@ abstract class $_HistoriModel implements HistoriModel {
 
   @override
   String get tanggal => throw _privateConstructorUsedError;
+  @override
+  String get status => throw _privateConstructorUsedError;
   @override
   String get waktuDatang => throw _privateConstructorUsedError;
   @override

@@ -9,6 +9,7 @@ const yellowColor = Color(0xFFf5f522);
 const orangeColor = Color(0xFFffbd2e);
 const greenColor = Color(0xFF4bd662);
 const blueColor = Color(0xFF22e3f5);
+const redColor = Color(0xFFff2b4f);
 
 // Text Style
 const primaryStyle =

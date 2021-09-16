@@ -13,6 +13,7 @@ import 'package:lottie/lottie.dart';
 
 import 'buttonAbsen.dart';
 import 'modalAbsen.dart';
+import 'modalLoading.dart';
 
 class MapAbsen extends StatelessWidget {
   const MapAbsen({
@@ -68,8 +69,12 @@ class MapAbsen extends StatelessWidget {
                               .authenticateWithBiometrics();
 
                           if (isAuthenticated) {
+                            modalBottomSheetLoading(context);
+
                             ResponseApiModel res =
                                 await AbsenService().setAbsen(absen);
+
+                            Navigator.of(context).pop();
 
                             modalBottomSheetAbsen(context, absen, res, () {
                               Navigator.of(context).pop();

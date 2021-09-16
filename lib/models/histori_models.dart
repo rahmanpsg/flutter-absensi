@@ -7,6 +7,7 @@ part 'histori_models.g.dart';
 class HistoriModel with _$HistoriModel {
   const factory HistoriModel({
     required String tanggal,
+    required String status,
     required String waktuDatang,
     required String waktuPulang,
     required String infoAbsenDatang,

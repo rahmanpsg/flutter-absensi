@@ -1,6 +1,7 @@
 import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:flutter/material.dart';
+import "package:absensi/app/string_extension.dart";
 
 class CardHistori extends StatelessWidget {
   const CardHistori({Key? key, required this.histori}) : super(key: key);
@@ -10,8 +11,8 @@ class CardHistori extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      height: 100,
+      margin: EdgeInsets.symmetric(vertical: 7),
+      height: 150,
       width: double.infinity,
       decoration: BoxDecoration(
         color: bgColor,
@@ -25,11 +26,19 @@ class CardHistori extends StatelessWidget {
         ],
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: primaryColor,
+              color: histori.status == "cuti"
+                  ? orangeColor
+                  : histori.status == "izin"
+                      ? blueColor
+                      : histori.status == "izinPulang"
+                          ? secondaryColor
+                          : histori.status == "alpa"
+                              ? redColor
+                              : primaryColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15.0),
                 bottomLeft: Radius.circular(15.0),
@@ -38,57 +47,73 @@ class CardHistori extends StatelessWidget {
             height: double.infinity,
             width: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
+          histori.status == "cuti" || histori.status == "izin"
+              ? _customInfo(
                   histori.tanggal,
-                  style: primaryStyle.copyWith(
-                    color: Colors.black54,
-                  ),
+                  histori.status,
+                  histori.waktuDatang,
+                  histori.infoAbsenDatang,
+                  Colors.black,
+                )
+              : _customInfo(
+                  histori.tanggal,
+                  'Waktu Datang',
+                  histori.waktuDatang,
+                  histori.infoAbsenDatang,
+                  histori.waktuDatang == '-' ? Colors.red : Colors.black,
                 ),
-                Text(
-                  'Waktu Absen',
-                  style: kHeaderStyle.copyWith(
+          histori.status == "cuti" || histori.status == "izin"
+              ? Container()
+              : SizedBox(
+                  width: 20,
+                  child: Divider(
                     color: primaryColor,
+                    thickness: 3,
                   ),
                 ),
-                Text(histori.waktuDatang),
-                Text('*${histori.infoAbsenDatang}'),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 20,
-            child: Divider(
-              color: primaryColor,
-              thickness: 3,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 13),
-                Text(
+          histori.status == "cuti" || histori.status == "izin"
+              ? Container()
+              : _customInfo(
+                  null,
                   'Waktu Pulang',
-                  style: kHeaderStyle.copyWith(
-                    color: primaryColor,
-                  ),
+                  histori.waktuPulang,
+                  histori.infoAbsenPulang,
+                  histori.waktuPulang == '-' ? Colors.red : Colors.black,
                 ),
-                Text(histori.waktuPulang),
-                Text('*${histori.infoAbsenPulang}'),
-              ],
-            ),
-          ),
-          SizedBox(width: 10),
         ],
       ),
     );
   }
+}
+
+Widget _customInfo(
+    String? tanggal, String status, String waktu, String info, Color color) {
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          tanggal != null
+              ? Text(
+                  tanggal,
+                  style: primaryStyle.copyWith(
+                    color: Colors.black54,
+                  ),
+                )
+              : SizedBox(height: 13),
+          Text(
+            status.capitalize(),
+            style: secondaryStyle.copyWith(fontSize: 17),
+          ),
+          Text(waktu),
+          Text(
+            info,
+            style: TextStyle(color: color),
+          ),
+        ],
+      ),
+    ),
+  );
 }

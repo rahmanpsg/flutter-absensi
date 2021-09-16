@@ -26,6 +26,8 @@ class InfoAbsen extends StatelessWidget {
     if (absen.izin) _liburTeks = 'Izin';
     if (absen.cuti) _liburTeks = 'Cuti';
 
+    print(_info);
+
     return Column(
       children: [
         Container(
@@ -77,7 +79,7 @@ class InfoAbsen extends StatelessWidget {
             ]),
           ),
         ),
-        tipe == 'datang' && (_info != '' || !_libur)
+        _info != '' && !_libur
             ? Container(
                 margin: EdgeInsets.symmetric(horizontal: 30),
                 height: 30.0,

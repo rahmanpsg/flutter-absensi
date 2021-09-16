@@ -24,7 +24,7 @@ class CardCuti extends StatelessWidget {
         : 0;
 
     final List<Color> _color = [blueColor, greenColor, orangeColor];
-    final List<String> _teks = ['Menuggu Konfirmasi', 'Diterima', 'Ditolak'];
+    final List<String> _teks = ['Menunggu Konfirmasi', 'Diterima', 'Ditolak'];
     final List<IconData> _icon = [Icons.access_time, Icons.check, Icons.close];
 
     return Container(
@@ -33,7 +33,7 @@ class CardCuti extends StatelessWidget {
         vertical: 8,
       ),
       // padding: EdgeInsets.all(20),
-      height: 80,
+      height: 90,
       width: double.infinity,
       decoration: BoxDecoration(
         color: bgColor,
@@ -61,15 +61,15 @@ class CardCuti extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(15),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     tanggal,
                     style: kHeaderStyle.copyWith(
-                      fontSize: 18,
+                      fontSize: 15,
                     ),
                   ),
                   Text("#" + keterangan)
@@ -78,7 +78,7 @@ class CardCuti extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(25),
             child: Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(

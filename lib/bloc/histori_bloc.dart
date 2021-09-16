@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/models/responseApi_models.dart';
+import 'package:absensi/models/totalHistori_models.dart';
 import 'package:absensi/services/absen_service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -32,19 +33,17 @@ class HistoriBloc extends Bloc<HistoriEvent, HistoriState> {
     yield HistoriLoading(event.bulan, event.tahun);
 
     try {
-      final histori =
-          await _absenService.getAbsenHistori(event.bulan, event.tahun);
+      final res = await _absenService.getAbsenHistori(event.bulan, event.tahun);
 
-      print(histori);
-
-      if (histori is List<HistoriModel>) {
+      if (res['historiList'] is List<HistoriModel>) {
         yield HistoriIsLoaded(
-          historis: histori,
+          historis: res['historiList'],
+          total: res['total'],
           bulan: event.bulan,
           tahun: event.tahun,
         );
-      } else if (histori is ResponseApiModel) {
-        yield HistoriFailure(message: histori.message);
+      } else if (res is ResponseApiModel) {
+        yield HistoriFailure(message: res.message);
       }
     } catch (e) {
       yield HistoriFailure(message: 'Terjadi masalah yang tidak diketahui');

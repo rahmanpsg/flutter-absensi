@@ -155,8 +155,6 @@ class HomeScreen extends StatelessWidget {
                         );
                       else if (state is AbsenIsLoaded) {
                         AbsenModel absen = state.absen;
-                        bool buttonDisable =
-                            absen.libur || absen.izin || absen.cuti;
 
                         DateTime now = new DateTime.now();
                         List tanggal = absen.tanggal
@@ -175,7 +173,11 @@ class HomeScreen extends StatelessWidget {
                           jam[1],
                         );
 
-                        bool buttonPulangDisable = jamPulang.isAfter(now);
+                        bool btnDisabled =
+                            absen.libur || absen.izin || absen.cuti;
+                        bool btnDatangDisabled = jamPulang.isBefore(now) ||
+                            absen.jamDatang.isNotEmpty;
+                        bool btnPulangDisabled = jamPulang.isAfter(now);
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,7 +188,7 @@ class HomeScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 _buttonAbsen(
-                                    disabled: buttonDisable,
+                                    disabled: btnDisabled || btnDatangDisabled,
                                     size: 25,
                                     icon: Icons.login,
                                     text: 'Absen Datang',
@@ -203,8 +205,7 @@ class HomeScreen extends StatelessWidget {
                                     }),
                                 SizedBox(width: 20),
                                 _buttonAbsen(
-                                    disabled:
-                                        buttonDisable || buttonPulangDisable,
+                                    disabled: btnDisabled || btnPulangDisabled,
                                     size: 25,
                                     icon: Icons.logout,
                                     text: 'Absen Pulang',

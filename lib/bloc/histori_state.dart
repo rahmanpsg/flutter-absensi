@@ -33,14 +33,18 @@ class HistoriLoading extends HistoriState {
   List<Object> get props => [bulan, tahun];
 }
 
+enum Total { totalHadir, totalAlpa, totalIzin, totalCuti }
+
 class HistoriIsLoaded extends HistoriState {
   const HistoriIsLoaded({
     required this.historis,
+    required this.total,
     required this.bulan,
     required this.tahun,
   }) : super(bulan: bulan, tahun: tahun);
 
   final List<HistoriModel> historis;
+  final TotalHistoriModel total;
   final String bulan;
   final String tahun;
 

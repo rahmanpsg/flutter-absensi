@@ -5,6 +5,7 @@ import 'package:absensi/app/api.dart';
 import 'package:absensi/models/absen_models.dart';
 import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/models/responseApi_models.dart';
+import 'package:absensi/models/totalHistori_models.dart';
 import 'package:http/http.dart' show Client;
 import 'authentication_service.dart';
 
@@ -71,16 +72,21 @@ class AbsenService {
 
       final queryParameters = {'bulan': bulan, 'tahun': tahun};
 
-      // final uri = Uri.http(
-      //   BASE_URL.replaceRange(0, 7, ''),
-      //   '/absen/$userID',
-      //   queryParameters,
-      // );
-      final uri = Uri.https(
-        BASE_URL.replaceRange(0, 8, ''),
-        '/absen/$userID',
-        queryParameters,
-      );
+      final uri;
+
+      if (BASE_URL.substring(0, BASE_URL.indexOf(":")) == "http") {
+        uri = Uri.http(
+          BASE_URL.replaceRange(0, 7, ''),
+          '/absen/$userID',
+          queryParameters,
+        );
+      } else {
+        uri = Uri.https(
+          BASE_URL.replaceRange(0, 8, ''),
+          '/absen/$userID',
+          queryParameters,
+        );
+      }
 
       final response = await client.get(
         uri,
@@ -89,22 +95,20 @@ class AbsenService {
 
       final res = jsonDecode(response.body);
 
-      if (res != null) {
-        final List<HistoriModel> historiList = List.generate(
-          (res as List).length,
-          (i) => HistoriModel.fromJson(res[i]),
-        );
+      final List<HistoriModel> historiList = List.generate(
+        (res['historiList'] as List).length,
+        (i) => HistoriModel.fromJson(res['historiList'][i]),
+      );
 
-        return historiList;
-      } else {
-        return <HistoriModel>[];
-      }
+      final TotalHistoriModel total = TotalHistoriModel.fromJson(res['total']);
+
+      return {'historiList': historiList, 'total': total};
     } catch (e) {
       log(e.toString());
-      return ResponseApiModel(
-        error: true,
-        message: 'Terjadi masalah yang tidak diketahui',
-      );
+      return {
+        'historiList': <HistoriModel>[],
+        'total': TotalHistoriModel(),
+      };
     }
   }
 }

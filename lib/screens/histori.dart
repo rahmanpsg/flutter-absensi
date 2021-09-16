@@ -4,6 +4,7 @@ import 'package:absensi/widgets/cardHistori.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import "package:absensi/app/string_extension.dart";
 
 class HistoriScreen extends StatelessWidget {
   const HistoriScreen({Key? key}) : super(key: key);
@@ -31,6 +32,14 @@ class HistoriScreen extends StatelessWidget {
 
     List<String> listTahun =
         List.generate(3, (index) => (tahun - index).toString());
+
+    List<String> listTotal = ["hadir", "alpa", "izin", 'cuti'];
+    List<Color> listColor = [
+      primaryColor,
+      redColor,
+      blueColor,
+      orangeColor,
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -87,15 +96,42 @@ class HistoriScreen extends StatelessWidget {
               state is HistoriIsLoaded
                   ? state.historis.length > 0
                       ? Expanded(
-                          child: ListView.builder(
-                              padding: EdgeInsets.all(20),
-                              shrinkWrap: true,
-                              itemCount: state.historis.length,
-                              itemBuilder: (context, index) {
-                                return CardHistori(
-                                  histori: state.historis[index],
-                                );
-                              }),
+                          child: Column(
+                            children: <Widget>[
+                              GridView.count(
+                                crossAxisCount: 2,
+                                childAspectRatio: (1 / .3),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                shrinkWrap: true,
+                                children: List.generate(4, (index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: _infoTotal(
+                                      listTotal[index].capitalize() +
+                                          " : " +
+                                          state.total
+                                              .toJson()[listTotal[index]]
+                                              .toString(),
+                                      listColor[index],
+                                    ),
+                                  );
+                                }),
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                    padding: EdgeInsets.all(10),
+                                    shrinkWrap: true,
+                                    itemCount: state.historis.length,
+                                    itemBuilder: (context, index) {
+                                      return CardHistori(
+                                        histori: state.historis[index],
+                                      );
+                                    }),
+                              ),
+                            ],
+                          ),
                         )
                       : _empty()
                   : state is HistoriLoading
@@ -179,6 +215,24 @@ Widget _dropDownButton({
               }).toList(),
             ),
           ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _infoTotal(String text, Color color) {
+  return Container(
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(15),
+    ),
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          style: primaryStyle.copyWith(fontWeight: FontWeight.bold),
         ),
       ),
     ),

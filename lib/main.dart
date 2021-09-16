@@ -12,6 +12,7 @@ import 'package:absensi/services/authentication_service.dart';
 import 'package:absensi/services/cuti_service.dart';
 import 'package:absensi/services/geolocator_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/absen_bloc.dart';
@@ -27,6 +28,13 @@ import 'styles/constant.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool isLogin = await AuthenticationService().isLogged();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light),
+  );
 
   runApp(MyApp(isLogin: isLogin));
 }
