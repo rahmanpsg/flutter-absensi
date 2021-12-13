@@ -25,6 +25,8 @@ class _$AbsenModelTearOff {
       required String tanggal,
       required String jamDatang,
       required String jamPulang,
+      String waktuDatang = "",
+      String waktuPulang = "",
       String infoAbsenDatang = "",
       String infoAbsenPulang = "",
       required bool lembur,
@@ -36,6 +38,8 @@ class _$AbsenModelTearOff {
       tanggal: tanggal,
       jamDatang: jamDatang,
       jamPulang: jamPulang,
+      waktuDatang: waktuDatang,
+      waktuPulang: waktuPulang,
       infoAbsenDatang: infoAbsenDatang,
       infoAbsenPulang: infoAbsenPulang,
       lembur: lembur,
@@ -59,6 +63,8 @@ mixin _$AbsenModel {
   String get tanggal => throw _privateConstructorUsedError;
   String get jamDatang => throw _privateConstructorUsedError;
   String get jamPulang => throw _privateConstructorUsedError;
+  String get waktuDatang => throw _privateConstructorUsedError;
+  String get waktuPulang => throw _privateConstructorUsedError;
   String get infoAbsenDatang => throw _privateConstructorUsedError;
   String get infoAbsenPulang => throw _privateConstructorUsedError;
   bool get lembur => throw _privateConstructorUsedError;
@@ -82,6 +88,8 @@ abstract class $AbsenModelCopyWith<$Res> {
       String tanggal,
       String jamDatang,
       String jamPulang,
+      String waktuDatang,
+      String waktuPulang,
       String infoAbsenDatang,
       String infoAbsenPulang,
       bool lembur,
@@ -104,6 +112,8 @@ class _$AbsenModelCopyWithImpl<$Res> implements $AbsenModelCopyWith<$Res> {
     Object? tanggal = freezed,
     Object? jamDatang = freezed,
     Object? jamPulang = freezed,
+    Object? waktuDatang = freezed,
+    Object? waktuPulang = freezed,
     Object? infoAbsenDatang = freezed,
     Object? infoAbsenPulang = freezed,
     Object? lembur = freezed,
@@ -127,6 +137,14 @@ class _$AbsenModelCopyWithImpl<$Res> implements $AbsenModelCopyWith<$Res> {
       jamPulang: jamPulang == freezed
           ? _value.jamPulang
           : jamPulang // ignore: cast_nullable_to_non_nullable
+              as String,
+      waktuDatang: waktuDatang == freezed
+          ? _value.waktuDatang
+          : waktuDatang // ignore: cast_nullable_to_non_nullable
+              as String,
+      waktuPulang: waktuPulang == freezed
+          ? _value.waktuPulang
+          : waktuPulang // ignore: cast_nullable_to_non_nullable
               as String,
       infoAbsenDatang: infoAbsenDatang == freezed
           ? _value.infoAbsenDatang
@@ -168,6 +186,8 @@ abstract class $$_AbsenModelCopyWith<$Res>
       String tanggal,
       String jamDatang,
       String jamPulang,
+      String waktuDatang,
+      String waktuPulang,
       String infoAbsenDatang,
       String infoAbsenPulang,
       bool lembur,
@@ -192,6 +212,8 @@ class _$$_AbsenModelCopyWithImpl<$Res> extends _$AbsenModelCopyWithImpl<$Res>
     Object? tanggal = freezed,
     Object? jamDatang = freezed,
     Object? jamPulang = freezed,
+    Object? waktuDatang = freezed,
+    Object? waktuPulang = freezed,
     Object? infoAbsenDatang = freezed,
     Object? infoAbsenPulang = freezed,
     Object? lembur = freezed,
@@ -215,6 +237,14 @@ class _$$_AbsenModelCopyWithImpl<$Res> extends _$AbsenModelCopyWithImpl<$Res>
       jamPulang: jamPulang == freezed
           ? _value.jamPulang
           : jamPulang // ignore: cast_nullable_to_non_nullable
+              as String,
+      waktuDatang: waktuDatang == freezed
+          ? _value.waktuDatang
+          : waktuDatang // ignore: cast_nullable_to_non_nullable
+              as String,
+      waktuPulang: waktuPulang == freezed
+          ? _value.waktuPulang
+          : waktuPulang // ignore: cast_nullable_to_non_nullable
               as String,
       infoAbsenDatang: infoAbsenDatang == freezed
           ? _value.infoAbsenDatang
@@ -252,6 +282,8 @@ class _$$_AbsenModel implements $_AbsenModel {
       required this.tanggal,
       required this.jamDatang,
       required this.jamPulang,
+      this.waktuDatang = "",
+      this.waktuPulang = "",
       this.infoAbsenDatang = "",
       this.infoAbsenPulang = "",
       required this.lembur,
@@ -272,6 +304,12 @@ class _$$_AbsenModel implements $_AbsenModel {
   final String jamPulang;
   @JsonKey(defaultValue: "")
   @override
+  final String waktuDatang;
+  @JsonKey(defaultValue: "")
+  @override
+  final String waktuPulang;
+  @JsonKey(defaultValue: "")
+  @override
   final String infoAbsenDatang;
   @JsonKey(defaultValue: "")
   @override
@@ -289,7 +327,7 @@ class _$$_AbsenModel implements $_AbsenModel {
 
   @override
   String toString() {
-    return 'AbsenModel(hari: $hari, tanggal: $tanggal, jamDatang: $jamDatang, jamPulang: $jamPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang, lembur: $lembur, libur: $libur, izin: $izin, cuti: $cuti)';
+    return 'AbsenModel(hari: $hari, tanggal: $tanggal, jamDatang: $jamDatang, jamPulang: $jamPulang, waktuDatang: $waktuDatang, waktuPulang: $waktuPulang, infoAbsenDatang: $infoAbsenDatang, infoAbsenPulang: $infoAbsenPulang, lembur: $lembur, libur: $libur, izin: $izin, cuti: $cuti)';
   }
 
   @override
@@ -307,6 +345,12 @@ class _$$_AbsenModel implements $_AbsenModel {
             (identical(other.jamPulang, jamPulang) ||
                 const DeepCollectionEquality()
                     .equals(other.jamPulang, jamPulang)) &&
+            (identical(other.waktuDatang, waktuDatang) ||
+                const DeepCollectionEquality()
+                    .equals(other.waktuDatang, waktuDatang)) &&
+            (identical(other.waktuPulang, waktuPulang) ||
+                const DeepCollectionEquality()
+                    .equals(other.waktuPulang, waktuPulang)) &&
             (identical(other.infoAbsenDatang, infoAbsenDatang) ||
                 const DeepCollectionEquality()
                     .equals(other.infoAbsenDatang, infoAbsenDatang)) &&
@@ -330,6 +374,8 @@ class _$$_AbsenModel implements $_AbsenModel {
       const DeepCollectionEquality().hash(tanggal) ^
       const DeepCollectionEquality().hash(jamDatang) ^
       const DeepCollectionEquality().hash(jamPulang) ^
+      const DeepCollectionEquality().hash(waktuDatang) ^
+      const DeepCollectionEquality().hash(waktuPulang) ^
       const DeepCollectionEquality().hash(infoAbsenDatang) ^
       const DeepCollectionEquality().hash(infoAbsenPulang) ^
       const DeepCollectionEquality().hash(lembur) ^
@@ -354,6 +400,8 @@ abstract class $_AbsenModel implements AbsenModel {
       required String tanggal,
       required String jamDatang,
       required String jamPulang,
+      String waktuDatang,
+      String waktuPulang,
       String infoAbsenDatang,
       String infoAbsenPulang,
       required bool lembur,
@@ -372,6 +420,10 @@ abstract class $_AbsenModel implements AbsenModel {
   String get jamDatang => throw _privateConstructorUsedError;
   @override
   String get jamPulang => throw _privateConstructorUsedError;
+  @override
+  String get waktuDatang => throw _privateConstructorUsedError;
+  @override
+  String get waktuPulang => throw _privateConstructorUsedError;
   @override
   String get infoAbsenDatang => throw _privateConstructorUsedError;
   @override

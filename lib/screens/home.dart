@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:absensi/bloc/absen_bloc.dart';
 import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/bloc/geolocation_bloc.dart';
@@ -156,8 +158,8 @@ class HomeScreen extends StatelessWidget {
                       else if (state is AbsenIsLoaded) {
                         AbsenModel absen = state.absen;
 
-                        bool btnDatangDisabled = true;
-                        bool btnPulangDisabled = true;
+                        bool btnDatangDisabled = false;
+                        bool btnPulangDisabled = false;
 
                         if (absen.jamPulang != "") {
                           DateTime now = new DateTime.now();
@@ -178,8 +180,9 @@ class HomeScreen extends StatelessWidget {
                           );
 
                           btnDatangDisabled = jamPulang.isBefore(now) ||
-                              absen.jamDatang.isNotEmpty;
-                          btnPulangDisabled = jamPulang.isAfter(now);
+                              absen.waktuDatang.isNotEmpty;
+                          btnPulangDisabled = jamPulang.isAfter(now) ||
+                              absen.waktuPulang.isNotEmpty;
                         }
 
                         bool btnDisabled =

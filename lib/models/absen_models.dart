@@ -10,6 +10,8 @@ class AbsenModel with _$AbsenModel {
     required String tanggal,
     required String jamDatang,
     required String jamPulang,
+    @Default("") String waktuDatang,
+    @Default("") String waktuPulang,
     @Default("") String infoAbsenDatang,
     @Default("") String infoAbsenPulang,
     required bool lembur,
