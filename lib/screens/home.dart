@@ -156,28 +156,34 @@ class HomeScreen extends StatelessWidget {
                       else if (state is AbsenIsLoaded) {
                         AbsenModel absen = state.absen;
 
-                        DateTime now = new DateTime.now();
-                        List tanggal = absen.tanggal
-                            .split('-')
-                            .map((e) => int.parse(e))
-                            .toList();
-                        List jam = absen.jamPulang
-                            .split(':')
-                            .map((e) => int.parse(e))
-                            .toList();
-                        DateTime jamPulang = new DateTime(
-                          tanggal[2],
-                          tanggal[1],
-                          tanggal[0],
-                          jam[0],
-                          jam[1],
-                        );
+                        bool btnDatangDisabled = true;
+                        bool btnPulangDisabled = true;
+
+                        if (absen.jamPulang != "") {
+                          DateTime now = new DateTime.now();
+                          List tanggal = absen.tanggal
+                              .split('-')
+                              .map((e) => int.parse(e))
+                              .toList();
+                          List jam = absen.jamPulang
+                              .split(':')
+                              .map((e) => int.parse(e))
+                              .toList();
+                          DateTime jamPulang = new DateTime(
+                            tanggal[2],
+                            tanggal[1],
+                            tanggal[0],
+                            jam[0],
+                            jam[1],
+                          );
+
+                          btnDatangDisabled = jamPulang.isBefore(now) ||
+                              absen.jamDatang.isNotEmpty;
+                          btnPulangDisabled = jamPulang.isAfter(now);
+                        }
 
                         bool btnDisabled =
                             absen.libur || absen.izin || absen.cuti;
-                        bool btnDatangDisabled = jamPulang.isBefore(now) ||
-                            absen.jamDatang.isNotEmpty;
-                        bool btnPulangDisabled = jamPulang.isAfter(now);
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

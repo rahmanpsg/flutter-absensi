@@ -94,7 +94,9 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           theme: ThemeData(
-            primaryColor: primaryColor,
+            colorScheme: ColorScheme.light().copyWith(
+              primary: primaryColor,
+            ),
             splashColor: secondaryColor,
             primarySwatch: Colors.pink,
             fontFamily: 'Gothic',

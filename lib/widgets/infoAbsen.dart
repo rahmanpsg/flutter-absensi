@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:absensi/models/absen_models.dart';
 import 'package:absensi/styles/constant.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +28,8 @@ class InfoAbsen extends StatelessWidget {
     if (absen.izin) _liburTeks = 'Izin';
     if (absen.cuti) _liburTeks = 'Cuti';
 
-    print(_info);
+    log(_info);
+    log(absen.toString());
 
     return Column(
       children: [
