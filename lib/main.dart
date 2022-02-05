@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/bloc/geolocation_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:absensi/services/absen_service.dart';
 import 'package:absensi/services/authentication_service.dart';
 import 'package:absensi/services/cuti_service.dart';
 import 'package:absensi/services/geolocator_service.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +27,19 @@ import 'screens/login.dart';
 import 'services/izin_service.dart';
 import 'styles/constant.dart';
 
+void backgroundFetchHeadlessTask(HeadlessTask task) async {
+  String taskId = task.taskId;
+  bool isTimeout = task.timeout;
+  if (isTimeout) {
+    log("[BackgroundFetch] Headless task timed-out: $taskId");
+    BackgroundFetch.finish(taskId);
+    return;
+  }
+
+  AbsenService().onBackgroundFetch(taskId);
+  BackgroundFetch.finish(taskId);
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool isLogin = await AuthenticationService().isLogged();
@@ -37,6 +52,8 @@ Future<void> main() async {
   );
 
   runApp(MyApp(isLogin: isLogin));
+
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class MyApp extends StatelessWidget {
@@ -68,7 +85,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) {
             final _absenService = RepositoryProvider.of<AbsenService>(context);
             if (isLogin)
-              return AbsenBloc(_absenService)..add(AbsenLoaded());
+              return AbsenBloc(_absenService)..add(AbsenInit());
             else
               return AbsenBloc(_absenService);
           }),

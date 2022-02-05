@@ -7,4 +7,6 @@ abstract class AbsenEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AbsenInit extends AbsenEvent {}
+
 class AbsenLoaded extends AbsenEvent {}

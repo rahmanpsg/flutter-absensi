@@ -22,6 +22,8 @@ class IzinBloc extends Bloc<IzinEvent, IzinState> {
       yield* _mapIzinLoaded(event);
     } else if (event is AddIzin) {
       yield* _mapAddIzin(event);
+    } else if (event is IzinReset) {
+      yield IzinInitial();
     }
   }
 

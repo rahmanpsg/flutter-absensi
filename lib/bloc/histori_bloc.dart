@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/models/responseApi_models.dart';
@@ -19,13 +20,15 @@ class HistoriBloc extends Bloc<HistoriEvent, HistoriState> {
   Stream<HistoriState> mapEventToState(
     HistoriEvent event,
   ) async* {
-    print(event);
+    log(event.toString());
     if (event is ChangeBulan) {
       yield HistoriChangeDropDown(event.bulan, state.tahun);
     } else if (event is ChangeTahun) {
       yield HistoriChangeDropDown(state.bulan, event.tahun);
     } else if (event is HistoriLoaded) {
       yield* _mapHistoriLoaded(event);
+    } else if (event is HistoriReset) {
+      yield HistoriInitial();
     }
   }
 

@@ -25,3 +25,5 @@ class HistoriLoaded extends HistoriEvent {
   final String bulan;
   final String tahun;
 }
+
+class HistoriReset extends HistoriEvent {}

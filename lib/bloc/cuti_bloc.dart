@@ -21,6 +21,8 @@ class CutiBloc extends Bloc<CutiEvent, CutiState> {
       yield* _mapCutiLoaded(event);
     } else if (event is AddCuti) {
       yield* _mapAddCuti(event);
+    } else if (event is CutiReset) {
+      yield CutiInitial();
     }
   }
 

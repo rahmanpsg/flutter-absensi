@@ -14,3 +14,5 @@ class AddCuti extends CutiEvent {
 
   final CutiModel cuti;
 }
+
+class CutiReset extends CutiEvent {}

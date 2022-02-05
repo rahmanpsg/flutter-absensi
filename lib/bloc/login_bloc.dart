@@ -24,8 +24,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
+    print("====>" + event.toString());
     if (event is LoginButtonClick) {
       yield* _mapLoginToState(event);
+    } else if (event is LoginUnauthorized) {
+      yield LoginFailure(message: 'Anda harus login kembali');
     }
   }
 
@@ -38,7 +41,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (res is UserModel) {
         _authenticationBloc.add(UserLoggedIn(user: res));
-        _absenBloc.add(AbsenLoaded());
+        _absenBloc.add(AbsenInit());
         yield LoginSuccess();
         yield LoginInitial();
       } else {

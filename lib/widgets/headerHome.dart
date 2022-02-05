@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:absensi/bloc/authentication_bloc.dart';
 import 'package:absensi/styles/constant.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -34,13 +35,25 @@ class HeaderHome extends StatelessWidget {
             child: state is AuthenticationOnAuthenticated
                 ? Row(
                     children: <Widget>[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        // child: Image.network(
-                        //   'https://img.a.transfermarkt.technology/portrait/big/8198-1626161872.jpg?lm=1',
-                        // ),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 150,
+                          minHeight: 150,
+                          maxWidth: 100,
+                          minWidth: 100,
+                        ),
                         child: state.user.image != null
-                            ? Image.memory(base64Decode(state.user.image))
+                            //
+                            ? CachedNetworkImage(
+                                placeholder: (context, url) => Center(
+                                    child: new CircularProgressIndicator()),
+                                errorWidget: (context, url, error) => Image(
+                                  image: AssetImage("assets/images/user.png"),
+                                  width: 100,
+                                ),
+                                imageUrl: state.user.image,
+                                fit: BoxFit.fill,
+                              )
                             : Image(
                                 image: AssetImage("assets/images/user.png"),
                                 width: 100,

@@ -25,10 +25,29 @@ class GeolocatorService {
     }
   }
 
+  Future<LocationPermission> getPermission() async {
+    await Geolocator.requestPermission();
+
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    print(permission != LocationPermission.always);
+
+    if (permission != LocationPermission.always)
+      return Future.error(
+          'Untuk dapat menggunakan aplikasi, akses lokasi dibutuhkan untuk selalu berjalan...');
+
+    return permission;
+  }
+
   Future<Position> getDeviceLocation() async {
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.bestForNavigation,
-    );
+    try {
+      return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation,
+      );
+    } catch (e) {
+      print(e);
+      return Future.error('Aktifkan akses lokasi');
+    }
   }
 
   Future toMyPosition(

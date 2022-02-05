@@ -14,3 +14,5 @@ class AddIzin extends IzinEvent {
 
   final String keterangan;
 }
+
+class IzinReset extends IzinEvent {}

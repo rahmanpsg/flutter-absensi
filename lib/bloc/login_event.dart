@@ -16,3 +16,5 @@ class LoginButtonClick extends LoginEvent {
   @override
   List<Object> get props => [username, password];
 }
+
+class LoginUnauthorized extends LoginEvent {}

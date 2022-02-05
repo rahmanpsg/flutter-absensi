@@ -6,11 +6,16 @@ import 'package:absensi/models/absen_models.dart';
 import 'package:absensi/models/histori_models.dart';
 import 'package:absensi/models/responseApi_models.dart';
 import 'package:absensi/models/totalHistori_models.dart';
+import 'package:absensi/services/geolocator_service.dart';
+import 'package:background_fetch/background_fetch.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' show Client;
 import 'authentication_service.dart';
 
 class AbsenService {
   Client client = Client();
+
+  GeolocatorService geolocatorService = GeolocatorService();
 
   Future<AbsenModel?> getAbsenRule() async {
     // await Future.delayed(Duration(milliseconds: 1500));
@@ -19,23 +24,27 @@ class AbsenService {
       final userID = await AuthenticationService().getUserID();
 
       final url = '$BASE_URL/rule';
-      final response = await client.get(Uri.parse(url), headers: _header);
+      final getRule = client.get(Uri.parse(url), headers: _header);
 
       final urlAbsen = '$BASE_URL/absen/hari/$userID';
-      final responseAbsen =
-          await client.get(Uri.parse(urlAbsen), headers: _header);
+      final getAbsen = client.get(Uri.parse(urlAbsen), headers: _header);
 
-      final res = jsonDecode(response.body);
-      final resAbsen = jsonDecode(responseAbsen.body);
+      final response = await Future.wait([getRule, getAbsen]);
 
-      // res['tanggal'] = resAbsen['tanggal'];
-      // res['infoAbsenDatang'] = resAbsen['infoAbsenDatang'];
-      // res['infoAbsenPulang'] = resAbsen['infoAbsenPulang'];
+      Map<String, dynamic> absen = {};
 
-      res.addAll(resAbsen);
+      response.forEach((res) {
+        final json = jsonDecode(res.body);
+        absen.addAll(json);
+      });
 
-      return new AbsenModel.fromJson(res);
+      if (absen.containsKey('error')) {
+        return Future.error(absen['message']);
+      }
+
+      return new AbsenModel.fromJson(absen);
     } catch (e) {
+      print(e);
       return null;
     }
   }
@@ -109,6 +118,112 @@ class AbsenService {
         'historiList': <HistoriModel>[],
         'total': TotalHistoriModel(),
       };
+    }
+  }
+
+  Future<void> initBackgroundFetch() async {
+    // Configure BackgroundFetch.
+    int status = await BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 1,
+        // forceAlarmManager: true,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresStorageNotLow: false,
+        requiresDeviceIdle: false,
+        requiredNetworkType: NetworkType.ANY,
+      ),
+      onBackgroundFetch,
+      _onBackgroundFetchTimeout,
+    );
+
+    print('[BackgroundFetch] configure success: $status');
+
+    BackgroundFetch.scheduleTask(
+      TaskConfig(
+        taskId: "com.absensi",
+        delay: 1000,
+        periodic: true,
+        forceAlarmManager: true,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresNetworkConnectivity: true,
+      ),
+    );
+
+    stopSchedule();
+    // startSchedule();
+  }
+
+  void startSchedule() {
+    BackgroundFetch.start().then((int status) {
+      print('[BackgroundFetch] start success: $status');
+    }).catchError((e) {
+      print('[BackgroundFetch] start FAILURE: $e');
+    });
+  }
+
+  void stopSchedule() {
+    BackgroundFetch.stop().then((status) {
+      print('[BackgroundFetch] stop success: $status');
+    });
+  }
+
+  void onBackgroundFetch(String taskId) async {
+    print("[BackgroundFetch] Event received: $taskId");
+
+    DateTime now = DateTime.now();
+
+    print('');
+    print("----WAKTU----->" + now.toIso8601String());
+
+    Position position = await geolocatorService.getDeviceLocation();
+
+    print("----LOKASI----->" + position.toString());
+    print('');
+
+    ResponseApiModel res = await _setLokasi(position);
+
+    print(res);
+    print('');
+
+    BackgroundFetch.finish(taskId);
+  }
+
+  void _onBackgroundFetchTimeout(String taskId) {
+    print("[BackgroundFetch] TIMEOUT: $taskId");
+    BackgroundFetch.finish(taskId);
+  }
+
+  Future<ResponseApiModel> _setLokasi(Position position) async {
+    try {
+      final _header = await AuthenticationService().setHeaderToken(headers);
+      final userID = await AuthenticationService().getUserID();
+
+      final url = '$BASE_URL/geolocation/$userID';
+      final response = await client.post(
+        Uri.parse(url),
+        headers: _header,
+        body: json.encode({
+          'latitude': position.latitude,
+          'longitude': position.longitude,
+        }),
+      );
+
+      final res = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        return ResponseApiModel.fromJson(res);
+      }
+
+      return ResponseApiModel.fromJson(res);
+    } catch (e) {
+      return ResponseApiModel(
+        error: true,
+        message: 'Terjadi masalah yang tidak diketahui',
+      );
     }
   }
 }

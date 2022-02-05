@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:absensi/models/absen_models.dart';
 import 'package:absensi/services/absen_service.dart';
@@ -17,13 +18,17 @@ class AbsenBloc extends Bloc<AbsenEvent, AbsenState> {
   Stream<AbsenState> mapEventToState(
     AbsenEvent event,
   ) async* {
-    print(event);
+    log(event.toString());
+    if (event is AbsenInit) {
+      _absenService.initBackgroundFetch();
+      yield* _mapDataLoaded();
+    }
     if (event is AbsenLoaded) {
-      yield* _mapDataLoaded(event);
+      yield* _mapDataLoaded();
     }
   }
 
-  Stream<AbsenState> _mapDataLoaded(AbsenLoaded event) async* {
+  Stream<AbsenState> _mapDataLoaded() async* {
     yield AbsenLoading();
 
     try {
@@ -31,11 +36,18 @@ class AbsenBloc extends Bloc<AbsenEvent, AbsenState> {
 
       if (absenRule != null) {
         yield AbsenIsLoaded(absen: absenRule);
+
+        if (absenRule.waktuDatang.isNotEmpty && absenRule.waktuPulang.isEmpty) {
+          _absenService.startSchedule();
+        } else {
+          _absenService.stopSchedule();
+        }
       } else {
         yield AbsenFailure(message: 'Tidak dapat terhubung ke server');
       }
     } catch (e) {
-      yield AbsenFailure(message: 'Terjadi masalah yang tidak diketahui');
+      print(e);
+      yield AbsenFailure(message: e.toString());
     }
   }
 }

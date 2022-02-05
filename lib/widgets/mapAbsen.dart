@@ -74,7 +74,14 @@ class MapAbsen extends StatelessWidget {
                             ResponseApiModel res =
                                 await AbsenService().setAbsen(absen);
 
-                            Navigator.of(context).pop();
+                            if (!res.error) {
+                              Navigator.of(context).pop();
+                              if (absen == 'Datang') {
+                                AbsenService().startSchedule();
+                              } else {
+                                AbsenService().stopSchedule();
+                              }
+                            }
 
                             modalBottomSheetAbsen(context, absen, res, () {
                               Navigator.of(context).pop();
