@@ -2,8 +2,11 @@ part of 'geolocation_bloc.dart';
 
 abstract class GeolocationState extends Equatable {
   const GeolocationState({
-    this.geolocation =
-        const GeolocationModel(latitude: 0, longitude: 0, radius: 0),
+    this.geolocation = const GeolocationModel(
+      latitude: 0,
+      longitude: 0,
+      radius: 0,
+    ),
     this.circle = const Circle(
       circleId: CircleId(''),
     ),

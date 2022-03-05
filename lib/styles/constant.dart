@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 // Colors
-// const primaryColor = Color(0xFFF875AA);
-// const secondaryColor = Color(0xFFFBACCC);
-// const dangerColor = Color(0xFFF1D1D0);
-// const bgColor = Color(0xFFF4F9F9);
+const primaryColor = Color(0xFFF875AA);
+const secondaryColor = Color(0xFFFBACCC);
+const dangerColor = Color(0xFFF1D1D0);
+const bgColor = Color(0xFFF4F9F9);
 
-const primaryColor = Color(0xFFFF87CA);
-const secondaryColor = Color(0xFFFFC4E1);
-const dangerColor = Color(0xFFEED7CE);
-const bgColor = Color(0xFFEAEAEA);
+// const primaryColor = Color(0xFFFF87CA);
+// const secondaryColor = Color(0xFFFFC4E1);
+// const dangerColor = Color(0xFFEED7CE);
+// const bgColor = Color(0xFFEAEAEA);
 
 const yellowColor = Color(0xFFf5f522);
 const orangeColor = Color(0xFFffbd2e);

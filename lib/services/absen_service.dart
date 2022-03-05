@@ -140,7 +140,9 @@ class AbsenService {
     );
 
     print('[BackgroundFetch] configure success: $status');
+  }
 
+  void startSchedule() {
     BackgroundFetch.scheduleTask(
       TaskConfig(
         taskId: "com.absensi",
@@ -153,11 +155,6 @@ class AbsenService {
       ),
     );
 
-    stopSchedule();
-    // startSchedule();
-  }
-
-  void startSchedule() {
     BackgroundFetch.start().then((int status) {
       print('[BackgroundFetch] start success: $status');
     }).catchError((e) {

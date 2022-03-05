@@ -1,4 +1,4 @@
-package com.example.absensi
+package com.skripsi.absensi
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
